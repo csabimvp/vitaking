@@ -1,0 +1,7 @@
+env
+admin.txt
+config.json
+requirements.txt
+product_photos
+/webshop/db.sqlite3
+/webshop/media

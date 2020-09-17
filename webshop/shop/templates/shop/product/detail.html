@@ -6,18 +6,36 @@
 {% endblock %}
 
 {% block content %}
+
+
 <div class="container">
     <div class="row">
-        <img src="{% if product.image %}{{ product.image.url }}{% else %}
+        <div class="col">
+            <img src="{% if product.image %}{{ product.image.url }}{% else %}
         {% static "img/no_image.png" %}{% endif %}">
-        <h1>{{ product.name }}</h1>
-        <h2>
-            <a href="{{ product.category.get_absolute_url }}">
-                {{ product.category }}
-            </a>
-        </h2>
-        <p class="price">${{ product.price }}</p>
-        {{ product.description|linebreaks }}
+        </div>
+        <div class="col">
+            <h1>{{ product.name }}</h1>
+            <h2>
+                <a href="{{ product.category.get_absolute_url }}">
+                    {{ product.category }}
+                </a>
+            </h2>
+            <p class="price">{{ product.price }} Ft.</p>
+            {{ product.description|linebreaks }}
+            <form action="{% url "cart:cart_add" product.id %}" method="post">
+                {{ cart_product_form }}
+                {% csrf_token %}
+                <br>
+                <input type="submit" class="btn btn-primary" value="Kosárba teszem">
+            </form>
+            <a href="{% url "shop:product_list" %}" class="btn btn-info">Vissza</a>
+        </div>
+    </div>
+    <div class="row">
+
     </div>
 </div>
+
+
 {% endblock %}

@@ -3,54 +3,88 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Csaba Keller, www.csabakeller.com">
+    <title>VitaKing · Budaors</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    <!-- Bootstrap core CSS -->
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
+    <!-- Fontawesome core -->
+    <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="{% static "css/carousel.css" %}" rel="stylesheet">
     <link href="{% static "css/base.css" %}" rel="stylesheet">
-    <title>VitaKing - webshop</title>
 </head>
 
 <body>
     <!--/ Nav Start /-->
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{% url "shop:home_view" %}"><img class="img-fluid"
+                src="{% static 'img/vitaminkiraly-vitamin-webaruhaz.png' %}" alt="" /></a></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
+                    <a class="nav-link" href="{% url "shop:home_view" %}">Főoldal <span
+                            class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown link
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Termékeink</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                        <a class="dropdown-item" href="{% url "shop:product_list" %}">Összes</a>
+                        {% for c in categories %}
+                        <a class="dropdown-item" href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                        {% endfor %}
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Rólunk</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Kapcsolat</a>
+                </li>
+                <li class="nav-item" id="cart">
+                    {% with total_items=cart|length %}
+                    {% if total_items > 0 %}
+                    <a href="{% url "cart:cart_detail" %}" class="nav-link">
+                        <span class="badge badge-danger mr-1">{{ total_items }}</span>
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="clearfix d-none d-sm-inline-block">Kosár</span>
+                    </a>
+                    {% else %}
+                    <a href="{% url "cart:cart_detail" %}" class="nav-link">
+                        <span class="badge badge-light mr-1">0</span>
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="clearfix d-none d-sm-inline-block">Kosár</span>
+                    </a>
+                    {% endif %}
+                    {% endwith %}
+                </li>
             </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Keresés" aria-label="Search">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Keresés</button>
+            </form>
         </div>
     </nav>
     <!--/ Nav End /-->
 
 
     <!--/ Content Start /-->
-    <div class="container">
-        {% block content %}
-        {% endblock %}
-    </div>
+
+    {% block content %}
+    {% endblock %}
+
     <!--/ Content End /-->
 
 
@@ -59,11 +93,14 @@
         <div class="row text-center padding">
             <div class="col-12">
                 <img src="{% static 'img/vitaminkiraly-vitamin-webaruhaz.png' %}" alt="">
-                <p>Vitaking - Budaors</p>
+                <p><strong>Vitaking - Budaörs Szabadság út 58.</strong></p>
+                <p>Tel: xxxxxxxxx</p>
             </div>
             <div class="col-12 social padding">
-                <a target="_blank" rel="noopener noreferrer" href="#"><i class="fab fa-facebook"></i></a>
-                <a target="_blank" rel="noopener noreferrer" href="#"><i class="fab fa-instagram"></i></a>
+                <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/vitakingbudaors"><i
+                        class="fab fa-facebook"></i></a>
+                <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/vitaminkingbudaors/"><i
+                        class="fab fa-instagram"></i></a>
                 <h5>&copy; 2020 · csabakeller.com</h5>
             </div>
         </div>

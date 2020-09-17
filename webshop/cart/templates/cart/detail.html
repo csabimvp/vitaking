@@ -1,0 +1,71 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h1>Kosár tartalma:</h1>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Termék</th>
+                    <th scope="col">Mennyiség</th>
+                    <th scope="col">Egységár</th>
+                    <th scope="col">Ár</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                {% with product=item.product %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>
+                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                    </td>
+                    <td>
+                        <span class="pr-2">
+                            <button class="btn btn-outline-success">
+                                <i class="fas fa-plus">
+                            </button></i>
+                        </span>
+                        {{ item.quantity }}
+                        <span class="pl-2">
+                            <button class="btn btn-outline-warning">
+                                <i class="fas fa-minus">
+                            </button></i>
+                        </span>
+                    </td>
+                    <td>{{ item.price }} Ft.</td>
+                    <td>{{ item.total_price }} Ft.</td>
+                    <td>
+                        <form action="{% url "cart:cart_remove" product.id %}" method="post">
+                            <button type="submit" class="btn btn-outline-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            {% csrf_token %}
+                        </form>
+                    </td>
+                </tr>
+                {% endwith %}
+                {% empty %}
+                <tr class="total">
+                    <td colspan="5">Az Ön kosara üres!</td>
+                </tr>
+                {% endfor %}
+                <tr class="total">
+                    <td colspan="4">Végösszeg</td>
+                    <td class="total-price">{{ cart.get_total_price }} Ft.</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row mr-4">
+            <a href="{% url "shop:product_list" %}" class="btn btn-primary">Vásárlás folytatása</a>
+            <a href="{% url "shop:product_list" %}" class="btn btn-secondary">Rendelés</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
