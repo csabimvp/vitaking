@@ -12,12 +12,14 @@
             <h1>email: {{ user.email }}</h1>
         </div>
         <div class="col">
-            <h1>Shipping address</h1>
-            <h3>Cim 1: {{ address.street_address }}</h3>
-            <h3>Cim 2: {{ address.apartment_address }}</h3>
-            <h3>Iranyito szam: {{ address.postal_code }}</h3>
-            <h3>{{ address.city }}</h3>
-            <h3>{{ address.address_type }}</h3>
+            {% for a in address %}
+            <h1>{% if a.address_type == "S" %}Shipping address{% else %}Billing address{% endif %}</h1>
+            <h3>Cim 1: {{ a.street_address }}</h3>
+            <h3>Cim 2: {{ a.apartment_address }}</h3>
+            <h3>Iranyito szam: {{ a.postal_code }}</h3>
+            <h3>{{ a.city }}</h3>
+            <h3>{{ a.address_type }}</h3>
+            {% endfor %}
         </div>
     </div>
 </div>

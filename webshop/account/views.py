@@ -64,10 +64,20 @@ def register(request):
 @login_required
 def user_profile(request, username):
     user = get_object_or_404(User, username=username)
-    address = get_object_or_404(Address, user=user)
+    # address = get_object_or_404(Address, user=user)
+    address = Address.objects.filter(user__in=User.objects.filter(username=username))
+    shipping_address = address.filter(address_type="s")
+    billing_address = address.filter(address_type="b")
     # orders = get_object_or_404(Order, user=user)
     return render(
-        request, "account/user/detail.html", {"user": user, "address": address}
+        request,
+        "account/user/detail.html",
+        {
+            "user": user,
+            "address": address,
+            "shipping_address": shipping_address,
+            "billing_address": billing_address,
+        },
     )
 
     # return render(request, "account/user/detail.html", {"user": user})
