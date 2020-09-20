@@ -1,5 +1,6 @@
 {% extends "shop/base.html" %}
 {% load static %}
+{% load humanize %}
 
 
 {% block content %}
@@ -34,8 +35,8 @@
                             </form>
                         </div>
                     </td>
-                    <td>{{ item.price }} Ft.</td>
-                    <td>{{ item.total_price }} Ft.</td>
+                    <td>{{ product.price|intcomma }} Ft.</td>
+                    <td>{{ item.total_price|intcomma }} Ft.</td>
                     <td>
                         <form action="{% url "cart:cart_remove" product.id %}" method="post">
                             <button type="submit" class="btn btn-outline-danger">
@@ -53,14 +54,14 @@
                 {% endfor %}
                 <tr class="total">
                     <td colspan="4">Végösszeg</td>
-                    <td class="total-price">{{ cart.get_total_price }} Ft.</td>
+                    <td class="total-price">{{ cart.get_total_price|intcomma }} Ft.</td>
                     <td></td>
                 </tr>
             </tbody>
         </table>
         <div class="row mr-4">
             <a href="{% url "shop:product_list" %}" class="btn btn-primary">Vásárlás folytatása</a>
-            <a href="{% url "shop:product_list" %}" class="btn btn-secondary">Rendelés</a>
+            <a href="{% url "orders:order_create" %}" class="btn btn-secondary ml-2">Rendelés</a>
         </div>
     </div>
 </div>

@@ -1,5 +1,6 @@
 {% extends "shop/base.html" %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}
 {{ product.name }}
@@ -33,7 +34,23 @@
         </div>
     </div>
     <div class="row">
-
+        <h3>Similar products:</h3>
+    </div>
+    <div class="row">
+        {% for p in similar_products %}
+        <div class="col-md-auto">
+            <div class="card" style="width: 18rem;">
+                <img src="{% if p.image %}{{ p.image.url }}{% else %}{% endif %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><a href="{{ p.get_absolute_url }}">{{ p.name }}</a>
+                    </h5>
+                    <p class="card-text">{{ p.description|truncatewords:25|linebreaks }}</p>
+                    <p class="card-text">{{ p.price|intcomma }} Ft.</p>
+                    <a href="{{ p.get_absolute_url }}" class="btn btn-info">Megtekint</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 

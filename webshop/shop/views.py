@@ -28,13 +28,22 @@ def product_list(request, category_slug=None):
 
 def product_detail(request, id, slug):
     product = get_object_or_404(Product, id=id, slug=slug, available=True)
+    categories = Category.objects.all()
+
+    similar_products = Product.objects.filter(category=product.category).exclude(id=id)
+    similar_products = similar_products[:4]
 
     cart_product_form = CartAddProductForm()
 
     return render(
         request,
         "shop/product/detail.html",
-        {"product": product, "cart_product_form": cart_product_form},
+        {
+            "product": product,
+            "categories": categories,
+            "similar_products": similar_products,
+            "cart_product_form": cart_product_form,
+        },
     )
 
 

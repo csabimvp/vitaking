@@ -4,6 +4,8 @@ import json
 with open("config.json") as config_file:
     config = json.load(config_file)
 
+from django.urls import reverse_lazy
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -23,14 +25,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "account.apps.AccountConfig",
+    "orders.apps.OrdersConfig",
+    "shop.apps.ShopConfig",
+    "cart.apps.CartConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "shop.apps.ShopConfig",
-    "cart.apps.CartConfig",
+    "django.contrib.humanize",
 ]
 
 MIDDLEWARE = [
@@ -113,3 +118,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 CART_SESSION_ID = "cart"
 
+LOGIN_REDIRECT_URL = "shop:home_view"
+LOGIN_URL = "account:login"
+LOGOUT_URL = "logout"
+
+ABSOLUTE_URL_OVERRIDES = {
+    "auth.user": lambda u: reverse_lazy("account:user_profile", args=[u.username])
+}

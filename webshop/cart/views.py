@@ -3,6 +3,7 @@ from django.views.decorators.http import require_POST
 from shop.models import Product, Category
 from .cart import Cart
 from .forms import CartAddProductForm, CartAddSingleProductForm
+from django.contrib import messages
 
 
 @require_POST
@@ -16,7 +17,7 @@ def cart_add(request, product_id):
         cart.add(
             product=product, quantity=cd["quantity"], override_quantity=cd["override"]
         )
-
+        messages.success(request, "Termék hozzáadva a kosárhoz!")
     return redirect("cart:cart_detail")
 
 
@@ -25,14 +26,16 @@ def cart_remove(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
+    messages.info(request, "Termék törölve a kosárból!")
     return redirect("cart:cart_detail")
 
 
 def cart_detail(request):
     cart = Cart(request)
+    categories = Category.objects.all()
     for item in cart:
         item["update_quantity_form"] = CartAddSingleProductForm(
             initial={"quantity": item["quantity"], "override": True}
         )
-    return render(request, "cart/detail.html", {"cart": cart})
+    return render(request, "cart/detail.html", {"categories": categories, "cart": cart})
 
