@@ -1,0 +1,24 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>username: {{ user.username }}</h1>
+            <h1>name: {{ user.last_name }}, {{ user.first_name }}</h1>
+            <h1>email: {{ user.email }}</h1>
+        </div>
+        <div class="col">
+            <h1>Shipping address</h1>
+            <h3>Cim 1: {{ address.street_address }}</h3>
+            <h3>Cim 2: {{ address.apartment_address }}</h3>
+            <h3>Iranyito szam: {{ address.postal_code }}</h3>
+            <h3>{{ address.city }}</h3>
+            <h3>{{ address.address_type }}</h3>
+        </div>
+    </div>
+</div>
+{% endblock %}
