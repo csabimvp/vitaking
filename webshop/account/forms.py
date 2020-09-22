@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import Address
 
 
 class LoginForm(forms.Form):
@@ -62,3 +63,32 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError("A jelszó nem egyezik!")
         return cd["password2"]
 
+
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = User
+        fields = ["email"]
+
+
+class AddressUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = [
+            "street_address",
+            "apartment_address",
+            "postal_code",
+            "city",
+            "address_type",
+            "default",
+        ]
+
+        widgets = {
+            "street_address": forms.TextInput(attrs={"class": "form-control"}),
+            "apartment_address": forms.TextInput(attrs={"class": "form-control"}),
+            "postal_code": forms.TextInput(attrs={"class": "form-control"}),
+            "city": forms.TextInput(attrs={"class": "form-control"}),
+            "address_type": forms.Select(attrs={"class": "form-control"}),
+            "default": forms.CheckboxInput(attrs={"class": "form-control"}),
+        }

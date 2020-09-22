@@ -18,6 +18,7 @@ urlpatterns = [
         name="password_change_done",
     ),
     path("register/", views.register, name="register"),
-    path("users/<username>/", views.user_profile, name="user_profile"),
+    path("profile/", views.user_profile, name="user_profile"),
+    path("profile/edit", views.user_profile_edit, name="user_profile_edit"),
 ]
 

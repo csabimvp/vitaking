@@ -1,0 +1,53 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>username: {{ user.username }}</h1>
+            <h1>name: {{ user.last_name }}, {{ user.first_name }}</h1>
+            <h1>email: {{ user.email }}</h1>
+        </div>
+        <!--/<div class="col">
+            {% for a in address %}
+            <h1>{% if a.address_type == "S" %}Shipping address{% else %}Billing address{% endif %}</h1>
+            <h3>Cim 1: {{ a.street_address }}</h3>
+            <h3>Cim 2: {{ a.apartment_address }}</h3>
+            <h3>Iranyito szam: {{ a.postal_code }}</h3>
+            <h3>{{ a.city }}</h3>
+            <h3>{{ a.address_type }}</h3>
+            {% endfor %}
+        </div>/-->
+    </div>
+
+    <div class="row">
+        <!--/<div class="col">
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Profil info</legend>
+                    {{ u_form }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Mentés</button>
+                </div>
+            </form>
+        </div>/-->
+        <div class="col">
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Profil info</legend>
+                    {{ a_form }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Mentés</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

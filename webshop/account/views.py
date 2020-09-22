@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import LoginForm, UserRegistrationForm
+from .forms import LoginForm, UserRegistrationForm, UserUpdateForm, AddressUpdateForm
 from orders.models import Order
 from .models import Address
 from django.shortcuts import get_object_or_404
@@ -62,16 +62,18 @@ def register(request):
 
 
 @login_required
-def user_profile(request, username):
-    user = get_object_or_404(User, username=username)
+def user_profile(request):
+    username = request.user.username
+    user = User.objects.get(username=username)
     # address = get_object_or_404(Address, user=user)
     address = Address.objects.filter(user__in=User.objects.filter(username=username))
     shipping_address = address.filter(address_type="s")
     billing_address = address.filter(address_type="b")
     # orders = get_object_or_404(Order, user=user)
+
     return render(
         request,
-        "account/user/detail.html",
+        "account/detail.html",
         {
             "user": user,
             "address": address,
@@ -81,3 +83,38 @@ def user_profile(request, username):
     )
 
     # return render(request, "account/user/detail.html", {"user": user})
+
+
+@login_required
+def user_profile_edit(request):
+    if request.method == "POST":
+
+        user = request.user.id
+        addr, created = Address.objects.get_or_create(user_id=user)
+
+        if created:
+            a_form = AddressUpdateForm(user, request.POST)
+
+            if a_form.is_valid():
+                a_form.save()
+                messages.success(
+                    request,
+                    f"Változtatások sikeresen elmentve {request.user.first_name}!",
+                )
+                return redirect("account:user_profile")
+
+        else:
+            a_form = AddressUpdateForm(request.POST, instance=addr)
+
+            if a_form.is_valid():
+                a_form.save()
+                messages.success(
+                    request,
+                    f"Változtatások sikeresen elmentve {request.user.first_name}!",
+                )
+                return redirect("account:user_profile")
+
+    else:
+        a_form = AddressUpdateForm()
+
+    return render(request, "account/edit.html", {"a_form": a_form})
