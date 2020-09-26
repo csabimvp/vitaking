@@ -52,11 +52,8 @@ class ProductDescription(models.Model):
     product = models.ForeignKey(
         Product, related_name="product_description", on_delete=models.CASCADE
     )
-    title = models.CharField(max_length=250, default=False)
+    title = models.CharField(max_length=250, blank=True)
     description = models.TextField(blank=True)
-
-    def __str__(self):
-        return self.title
 
 
 class ProductImage(models.Model):

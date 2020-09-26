@@ -25,7 +25,10 @@ class Order(models.Model):
         return f"Order {self.id}"
 
     def get_total_cost(self):
-        return sum(item.get_cost() for item in self.items.all())
+        if item.sale() == True:
+            return sum(item.get_onsale_cost() for item in self.items.all())
+        else:
+            return sum(item.get_cost() for item in self.items.all())
 
 
 class OrderItem(models.Model):
@@ -39,5 +42,11 @@ class OrderItem(models.Model):
     def __str__(self):
         return str(self.id)
 
+    def sale(self):
+        return self.on_sale
+
     def get_cost(self):
         return self.price * self.quantity
+
+    def get_onsale_cost(self):
+        return self.on_sale_price * self.quantity

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -125,3 +126,6 @@ LOGOUT_URL = "logout"
 ABSOLUTE_URL_OVERRIDES = {
     "auth.user": lambda u: reverse_lazy("account:user_profile", args=[u.username])
 }
+
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

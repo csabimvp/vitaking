@@ -3,7 +3,7 @@
 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3 pt-2">
     <div class="row">
         <div class="col">
             <h1>username: {{ user.username }}</h1>
@@ -12,18 +12,70 @@
         </div>
         <div class="col">
             {% for a in address %}
-            <h1>{% if a.address_type == "S" %}Shipping address{% else %}Billing address{% endif %}</h1>
+            <!--<h1>{% if a.address_type == "S" %}Shipping address{% else %}Billing address{% endif %}</h1>-->
+            <h1>Cim:</h1>
             <h3>Cim 1: {{ a.street_address }}</h3>
             <h3>Cim 2: {{ a.apartment_address }}</h3>
             <h3>Iranyito szam: {{ a.postal_code }}</h3>
-            <h3>{{ a.city }}</h3>
-            <h3>{{ a.address_type }}</h3>
+            <h3>Varos: {{ a.city }}</h3>
+            <!--<h3>{{ a.address_type }}</h3>-->
+            {% endfor %}
+        </div>
+        <div class="col">
+            {% for o in orders %}
+            <h3>Order number: {{ o.id }}</h3>
+            <ul>
+                {% for oi in order_items %}
+                <li>{{ oi.product }}</li>
+                <li>{{ oi.price }}</li>
+                <li>{{ oi.quantity }}</li>
+                {% endfor %}
+            </ul>
             {% endfor %}
         </div>
     </div>
 
     <div class="row">
-        <a href="{% url "account:user_profile_edit" %}" class="btn btn-outline-secondary mr-2">Profil szerkesztese</a>
+        <div class="col">
+            <!-- Address Button trigger modal -->
+            {% if address %}
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#staticBackdrop">
+                Cim szerkesztése
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#staticBackdrop">
+                Cim hozzáadása
+            </button>
+            {% endif %}
+
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title border-bottom mb-4" id="staticBackdropLabel">Profil szerkesztése</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST">
+                                {% csrf_token %}
+                                {{ a_form }}
+                                <div class="modal-footer">
+                                    <button class="btn btn-outline-primary" type="submit">Mentés</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Bezárás</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+
 </div>
 {% endblock %}

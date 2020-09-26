@@ -35,7 +35,11 @@
                             </form>
                         </div>
                     </td>
+                    {% if product.on_sale %}
+                    <td><del>{{ product.price|intcomma }} </del>{{ product.on_sale_price|intcomma }} Ft.</td>
+                    {% else %}
                     <td>{{ product.price|intcomma }} Ft.</td>
+                    {% endif %}
                     <td>{{ item.total_price|intcomma }} Ft.</td>
                     <td>
                         <form action="{% url "cart:cart_remove" product.id %}" method="post">

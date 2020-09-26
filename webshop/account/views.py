@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -23,12 +22,15 @@ def user_login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponse("Authenticated successfully")
+                    messages.success(request, f"Üdv újra {request.user.first_name}!")
+                    # return HttpResponse("Authenticated successfully")
 
                 else:
-                    return HttpResponse("Disabled account")
+                    messages.warning(request, f"Érvénytelen bejelentkezés.")
+                    return render(request, "account/login.html", {"form": form})
             else:
-                return HttpResponse("Invalid login")
+                messages.warning(request, f"Érvénytelen bejelentkezés.")
+                return render(request, "account/login.html", {"form": form})
     else:
         form = LoginForm()
 
@@ -50,8 +52,8 @@ def register(request):
             # Save the user object
             new_user.save()
 
-            username = user_form.cleaned_data["username"]
-            messages.success(request, f"Sikeres regisztráció {username}!")
+            name = user_form.cleaned_data["first_name"]
+            messages.success(request, f"Sikeres regisztráció {name}!")
 
             return render(request, "account/register_done.html", {"new_user": new_user})
 
@@ -62,7 +64,7 @@ def register(request):
 
 
 @login_required
-def user_profile(request):
+def duser_profile(request):
     username = request.user.username
     user = User.objects.get(username=username)
     # address = get_object_or_404(Address, user=user)
@@ -81,8 +83,6 @@ def user_profile(request):
             "billing_address": billing_address,
         },
     )
-
-    # return render(request, "account/user/detail.html", {"user": user})
 
 
 @login_required
@@ -118,3 +118,55 @@ def user_profile_edit(request):
         a_form = AddressUpdateForm()
 
     return render(request, "account/edit.html", {"a_form": a_form})
+
+
+@login_required
+def user_profile(request):
+    username = request.user.username
+    user = User.objects.get(username=username)
+    # address = get_object_or_404(Address, user=user)
+    address = Address.objects.filter(user__in=User.objects.filter(username=username))
+    # shipping_address = address.filter(address_type="s")
+    # billing_address = address.filter(address_type="b")
+    # orders = get_object_or_404(Order, user=user)
+    if request.method == "POST":
+        try:
+            usr = request.user.id
+            addr = Address.objects.get(user_id=usr)
+
+            a_form = AddressUpdateForm(request.POST, instance=addr)
+
+            if a_form.is_valid():
+                a_form.save()
+                messages.success(
+                    request,
+                    f"Változtatások sikeresen elmentve {request.user.first_name}!",
+                )
+                return redirect("account:user_profile")
+
+        except Address.DoesNotExist:
+            a_form = AddressUpdateForm(request.POST)
+
+            if a_form.is_valid():
+                a_form.instance.user = user
+                a_form.save()
+                messages.success(
+                    request,
+                    f"Változtatások sikeresen elmentve {request.user.first_name}!",
+                )
+                return redirect("account:user_profile")
+
+    else:
+        a_form = AddressUpdateForm()
+
+    return render(
+        request,
+        "account/detail.html",
+        {
+            "user": user,
+            "address": address,
+            # "shipping_address": shipping_address,
+            # "billing_address": billing_address,
+            "a_form": a_form,
+        },
+    )

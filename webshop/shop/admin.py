@@ -21,7 +21,7 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductDescriptionAdmin, ProductImageAdmin]
 
     list_display = ["name", "slug", "price", "available", "created", "updated"]
-    list_filter = ["available", "created", "updated"]
+    list_filter = ["available", "created", "updated", "on_sale"]
     prepopulated_fields = {"slug": ("name",)}
 
     class Meta:

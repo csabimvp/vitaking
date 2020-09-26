@@ -44,7 +44,7 @@ class UserRegistrationForm(forms.ModelForm):
         widget=forms.PasswordInput(
             attrs={
                 "type": "password",
-                "id": "inputPassword",
+                "id": "inputPassword2",
                 "class": "form-control",
                 "placeholder": "Jelszó",
             }
@@ -54,7 +54,7 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("username", "first_name", "email")
+        fields = ("username", "first_name", "last_name", "email")
 
     def clean_password2(self):
         cd = self.cleaned_data
@@ -80,8 +80,7 @@ class AddressUpdateForm(forms.ModelForm):
             "apartment_address",
             "postal_code",
             "city",
-            "address_type",
-            "default",
+            # "address_type",
         ]
 
         widgets = {
@@ -89,6 +88,5 @@ class AddressUpdateForm(forms.ModelForm):
             "apartment_address": forms.TextInput(attrs={"class": "form-control"}),
             "postal_code": forms.TextInput(attrs={"class": "form-control"}),
             "city": forms.TextInput(attrs={"class": "form-control"}),
-            "address_type": forms.Select(attrs={"class": "form-control"}),
-            "default": forms.CheckboxInput(attrs={"class": "form-control"}),
+            # "address_type": forms.Select(attrs={"class": "form-control"}),
         }

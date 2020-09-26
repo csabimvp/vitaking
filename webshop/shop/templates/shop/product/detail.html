@@ -9,9 +9,12 @@
 {% block content %}
 
 
-<div class="container">
+<div class="container mt-3 pt-2">
     <div class="row">
         <div class="col">
+            {% if product.on_sale %}
+            <div class="top-right">Akció</div>
+            {% endif %}
             <img src="{% if product.image %}{{ product.image.url }}{% else %}
         {% static "img/no_image.png" %}{% endif %}">
         </div>
@@ -22,7 +25,12 @@
                     {{ product.category }}
                 </a>
             </h2>
+            {% if product.on_sale %}
+            <p class="price"><del>{{ product.price }} Ft.</del></p>
+            <p class="price">{{ product.on_sale_price }} Ft.</p>
+            {% else %}
             <p class="price">{{ product.price }} Ft.</p>
+            {% endif %}
             {{ product.description|linebreaks }}
             <form action="{% url "cart:cart_add" product.id %}" method="post">
                 {{ cart_product_form }}
@@ -34,45 +42,72 @@
         </div>
     </div>
 
-    <div class="row">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-                    aria-selected="true">Leírás</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                    aria-controls="profile" aria-selected="false">További információk</a>
-            </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                Product description
+
+
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-8 mt-3">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+                            aria-controls="nav-home" aria-selected="true">Leírás</a>
+                        <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+                            aria-controls="nav-profile" aria-selected="false">További információk</a>
+                    </div>
+                </nav>
+                <div class="tab-content mt-3" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        {% for d in descriptors %}
+                        <div class="row">
+                            <h3>{{ d.title }}</h3>
+                            <p>{{ d.description }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <div class="row">
+                            <h3>{{ product.weight }} g</h3>
+                            <h3>{{ product.units }} db</h3>
+                            <h3>{{ product.daily_dose }} db/nap</h3>
+                            <h3>{{ product.ogyei_number }}</h3>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                Product info
+            <div class="col-4 mt-3">
+                <h3>Similar products:</h3>
+                {% for p in similar_products %}
+                <div class="col-md-auto">
+                    <div class="card" style="width: 18rem;">
+                        <img src="{% if p.image %}{{ p.image.url }}{% else %}{% endif %}" class="card-img-top"
+                            alt="...">
+                        {% if p.on_sale %}
+                        <div class="top-right">Akció</div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="{{ p.get_absolute_url }}">{{ p.name }}</a>
+                            </h5>
+                            <!--<p class="card-text">{{ p.description|truncatewords:25|linebreaks }}</p>-->
+                            {% if p.on_sale %}
+                            <p class="card-text">{{ p.on_sale_price|intcomma }} Ft.</p>
+                            {% else %}
+                            <p class="card-text">{{ p.price|intcomma }} Ft.</p>
+                            {% endif %}
+                            <a href="{{ p.get_absolute_url }}" class="btn btn-info">Megtekint</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
 
+
     <div class="row">
-        <h3>Similar products:</h3>
+
     </div>
     <div class="row">
-        {% for p in similar_products %}
-        <div class="col-md-auto">
-            <div class="card" style="width: 18rem;">
-                <img src="{% if p.image %}{{ p.image.url }}{% else %}{% endif %}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title"><a href="{{ p.get_absolute_url }}">{{ p.name }}</a>
-                    </h5>
-                    <p class="card-text">{{ p.description|truncatewords:25|linebreaks }}</p>
-                    <p class="card-text">{{ p.price|intcomma }} Ft.</p>
-                    <a href="{{ p.get_absolute_url }}" class="btn btn-info">Megtekint</a>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
+
     </div>
 </div>
 

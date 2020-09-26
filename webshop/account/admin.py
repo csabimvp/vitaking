@@ -10,9 +10,8 @@ class AddressAdmin(admin.ModelAdmin):
         "apartment_address",
         "postal_code",
         "city",
-        "address_type",
-        "default",
+        # "address_type",
     ]
 
-    list_filter = ["default", "address_type", "city"]
+    list_filter = ["user", "city"]
     search_fields = ["user", "street_address", "apartment_address"]

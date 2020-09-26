@@ -52,3 +52,20 @@ html, body {
     font-size: 1.5rem;
     text-align: left;
 }
+
+.top-right {
+    position: absolute;
+    padding: 5px;
+    top: 8px;
+    right: 16px;
+    background-color: rgb(235, 54, 54);
+    color: whitesmoke;
+    font-weight: 600;
+    font-size: larger;
+    border-radius: 15px;
+  }
+
+  #nav-on-sale {
+      color: tomato;
+      font-weight: 700;
+  }
