@@ -21,7 +21,11 @@
                         </h6>
                         <h6>Mennyiség: {{ item.quantity }}</h6>
                     </div>
+                    {% if item.product.on_sale %}
+                    <span class="text-muted">{{ item.total_price_on_sale|intcomma }} Ft.</span>
+                    {% else %}
                     <span class="text-muted">{{ item.total_price|intcomma }} Ft.</span>
+                    {% endif %}
                 </li>
                 {% endfor %}
                 {% if cart.coupon %}

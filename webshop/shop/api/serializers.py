@@ -47,5 +47,6 @@ class OrderSerializer(serializers.ModelSerializer):
             "paid",
             "created",
             "coupon",
+            "get_total_cost",
             "products",
         ]

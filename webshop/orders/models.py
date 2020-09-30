@@ -36,7 +36,11 @@ class Order(models.Model):
         return f"Order {self.id}"
 
     def get_total_cost(self):
-        total_cost = sum(item.get_cost() for item in self.items.all())
+        # total_cost = sum(item.get_cost() for item in self.items.all())
+        total_cost = sum(
+            item.get_onsale_cost() if item.product.on_sale == True else item.get_cost()
+            for item in self.items.all()
+        )
         return total_cost - total_cost * (self.discount / Decimal(100))
 
 
@@ -52,10 +56,10 @@ class OrderItem(models.Model):
         return str(self.id)
 
     def sale(self):
-        return self.on_sale
+        return self.product.on_sale
 
     def get_cost(self):
         return self.price * self.quantity
 
     def get_onsale_cost(self):
-        return self.on_sale_price * self.quantity
+        return self.product.on_sale_price * self.quantity
