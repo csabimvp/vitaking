@@ -37,10 +37,11 @@
                     </td>
                     {% if product.on_sale %}
                     <td><del>{{ product.price|intcomma }} </del>{{ product.on_sale_price|intcomma }} Ft.</td>
+                    <td>{{ item.total_price_on_sale|intcomma }} Ft.</td>
                     {% else %}
                     <td>{{ product.price|intcomma }} Ft.</td>
-                    {% endif %}
                     <td>{{ item.total_price|intcomma }} Ft.</td>
+                    {% endif %}
                     <td>
                         <form action="{% url "cart:cart_remove" product.id %}" method="post">
                             <button type="submit" class="btn btn-outline-danger">
@@ -56,17 +57,46 @@
                     <td colspan="5">Az Ön kosara üres!</td>
                 </tr>
                 {% endfor %}
+                {% if cart.coupon %}
+                <tr class="subtotal">
+                    <td colspan="4">Részösszeg</td>
+                    <td class="total-price">{{ cart.get_total_price|intcomma }} Ft.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="text-success">
+                        "{{ cart.coupon.code }}" kupon ({{ cart.coupon.discount }}%)
+                    </td>
+                    <td class="text-success">- {{ cart.get_discount|floatformat:0 }} Ft.</td>
+                    <td></td>
+                </tr>
+                {% endif %}
                 <tr class="total">
                     <td colspan="4">Végösszeg</td>
-                    <td class="total-price">{{ cart.get_total_price|intcomma }} Ft.</td>
+                    <td class="total-price">
+                        {{ cart.get_total_price_after_discount|intcomma }} Ft.
+                    </td>
                     <td></td>
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="row mt-3 pt-2">
+        <h3>Apply a coupon:</h3>
+        <form action="{% url "coupons:apply" %}" method="post">
+            <div class="input-group">
+                {{ coupon_apply_form }}
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Redeem</button>
+            </div>
+        </form>
+    </div>
+    <div class="row mt-3 pt-2">
         <div class="row mr-4">
             <a href="{% url "shop:product_list" %}" class="btn btn-primary">Vásárlás folytatása</a>
             <a href="{% url "orders:order_create" %}" class="btn btn-secondary ml-2">Rendelés</a>
         </div>
     </div>
+
 </div>
 {% endblock %}

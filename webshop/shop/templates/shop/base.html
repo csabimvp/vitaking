@@ -44,6 +44,7 @@
                         {% for c in categories %}
                         <a class="dropdown-item" href="{{ c.get_absolute_url }}">{{ c.name }}</a>
                         {% endfor %}
+                        <a class="dropdown-item" href="{% url "shop:on_sale_view" %}" id="nav-on-sale">Akciós</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -99,9 +100,12 @@
     {% if messages %}
     {% for message in messages %}
 
-    <div class="container mt-3">
-        <div class="alert alert-{{ message.tags }}" role="alert">
+    <div class="container mt-3 pt-2">
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
             {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     </div>
 

@@ -7,7 +7,7 @@
 
 <div class="container checkout mt-3 pt-2">
     <div class="row">
-        <div class="col-md-6 order-md-2 mb-4">
+        <div class="col-md-4 order-md-2 mb-4">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
                 <span class="text-muted">Your cart</span>
                 <span class="badge badge-secondary badge-pill">{{ cart|length }}</span>
@@ -17,33 +17,150 @@
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
                         <h6 class="my-0">
-                            <a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a>
+                            <a href="{{ item.product.get_absolute_url }}">{{ item.product.name|truncatechars:30 }}</a>
                         </h6>
                         <h6>Mennyiség: {{ item.quantity }}</h6>
                     </div>
                     <span class="text-muted">{{ item.total_price|intcomma }} Ft.</span>
                 </li>
                 {% endfor %}
+                {% if cart.coupon %}
+                <li class="list-group-item d-flex justify-content-between bg-light">
+                    <div class="text-success">
+                        <h6 class="my-0">"{{ cart.coupon.code }}" ({{ cart.coupon.discount }}%)</h6>
+                    </div>
+                    <span class="text-success">- {{ cart.get_discount|floatformat:0 }} Ft.</span>
+                </li>
+                {% endif %}
             </ul>
+            <p class="total-price"><strong>Végösszeg:
+                    {{ cart.get_total_price_after_discount|intcomma }} Ft.</strong></p>
+        </div>
+        <div class="col-md-8 order-md-1">
+            <h4 class="mb-3">Áttekintés</h4>
+            <hr class="mb-4">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <h3>Keresztnév</h3>
+                    <h4>{{ user.first_name }}</h4>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h3 for="lastName">Vezetéknév</h3>
+                    <h4>{{ user.last_name }}</h4>
+                </div>
+            </div>
 
-            <form class="card p-2">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Promo code">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-secondary">Redeem</button>
+            <div class="mb-3">
+                <h3>Felhasználónév</h3>
+                <h4>{{ user.username }}</h4>
+            </div>
+
+            <div class="mb-3">
+                <h3>Email</h3>
+                <h4>{{ user.email }}</h4>
+            </div>
+            <hr class="mb-4">
+
+            {% if address %}
+            <h4 class="mb-3">Szállítási cím</h4>
+            <div class="mb-3">
+                <h3>Cím</h3>
+                <h4>{{ address.street_address }}</h4>
+            </div>
+            {% if address.apartmant_address %}
+            <div class="mb-3">
+                <h3">Cím 2</h3>
+                    <h4>{{ address.apartmant_address }}</h4>
+            </div>
+            <hr class="mb-4">
+            {% endif %}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <h3>Város</h3>
+                    <h4>{{ address.city }}</h4>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h3>Irányítószám</h3>
+                    <h4>{{ address.postal_code }}</h4>
+                </div>
+            </div>
+            <!--<hr class="mb-4">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="same-address">
+                    <label class="custom-control-label" for="same-address">Shipping address is the same as my billing
+                        address</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="save-info">
+                    <label class="custom-control-label" for="save-info">Save this information for next time</label>
+                </div>
+                <hr class="mb-4">
+                {% else %}
+                <hr class="mb-4">
+                <h2 class="mt-3 pt-2">A megrendelés folytatásához kérjük adja meg a szállítási címet a profiljában</h2>
+                <a href="{% url "account:user_profile" %}" class="btn btn-danger mt-2">Profil
+                    szerkesztése</a>
+                <hr class="mb-4">
+                {% endif %}
+
+                <h4 class="mt-3 pt-2 mb-3">Payment</h4>
+
+                <div class="d-block my-3">
+                    <div class="custom-control custom-radio">
+                        <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked
+                            required>
+                        <h3 class="custom-control-h3" for="credit">Credit card</h3>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required>
+                        <h3 class="custom-control-h3" for="debit">Debit card</h3>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required>
+                        <h3 class="custom-control-h3" for="paypal">PayPal</h3>
                     </div>
                 </div>
-            </form>
-            <p class="total-price"><strong>Végösszeg: {{ cart.get_total_price|intcomma }} Ft.</strong></p>
-        </div>
-        <div class="col-md-6 order-md-1 checkout-info">
-            <div class="form-group">
-                <form method="POST">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <h3 for="cc-name">Name on card</h3>
+                        <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                        <small class="text-muted">Full name as displayed on card</small>
+                        <div class="invalid-feedback">
+                            Name on card is required
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h3 for="cc-number">Credit card number</h3>
+                        <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                        <div class="invalid-feedback">
+                            Credit card number is required
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <h3 for="cc-expiration">Expiration</h3>
+                        <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                        <div class="invalid-feedback">
+                            Expiration date required
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <h3 for="cc-cvv">CVV</h3>
+                        <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                        <div class="invalid-feedback">
+                            Security code required
+                        </div>
+                    </div>
+                </div>-->
+            <hr class="mb-4">
+            <form method="post">
+                <div class="custom-control custom-checkbox">
                     {{ form.as_p }}
-                    {% csrf_token %}
-                    <button class="btn btn-primary">Rendelés</button>
-                </form>
-            </div>
+                </div>
+                {% csrf_token %}
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+            </form>
         </div>
     </div>
 </div>

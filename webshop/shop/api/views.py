@@ -1,19 +1,16 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets, filters, mixins
 from shop.models import Product
 from orders.models import Order, OrderItem
 from shop.api.serializers import ProductSerializer, OrderSerializer, OrderItemSerializer
-from rest_framework import mixins
-from rest_framework import viewsets
+from rest_framework.permissions import IsAdminUser
+from rest_framework.authentication import BasicAuthentication
 
 
 class ProductListView(
     mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
 ):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-
-
-class ProductDetailView(generics.RetrieveAPIView):
+    authentication_classes = (BasicAuthentication,)
+    permission_classes = (IsAdminUser,)
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
@@ -21,17 +18,7 @@ class ProductDetailView(generics.RetrieveAPIView):
 class OrderListView(
     mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
 ):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-
-
-class OrderItemListView(
-    mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
-):
-    queryset = OrderItem.objects.all()
-    serializer_class = OrderItemSerializer
-
-
-class OrderDetailView(generics.RetrieveAPIView):
+    authentication_classes = (BasicAuthentication,)
+    permission_classes = (IsAdminUser,)
     queryset = Order.objects.all()
     serializer_class = OrderSerializer

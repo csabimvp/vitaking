@@ -1,6 +1,7 @@
 from decimal import Decimal
 from django.conf import settings
 from shop.models import Product
+from coupons.models import Coupon
 
 
 class Cart(object):
@@ -14,6 +15,9 @@ class Cart(object):
             # save an empty cart in the session
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
+
+        # store current applied coupon
+        self.coupon_id = self.session.get("coupon_id")
 
     def __iter__(self):
         """
@@ -31,6 +35,8 @@ class Cart(object):
         for item in cart.values():
             item["price"] = Decimal(item["price"])
             item["total_price"] = item["price"] * item["quantity"]
+            item["on_sale_price"] = Decimal(item["on_sale_price"])
+            item["total_price_on_sale"] = item["on_sale_price"] * item["quantity"]
             yield item
 
     def __len__(self):
@@ -45,7 +51,11 @@ class Cart(object):
         """
         product_id = str(product.id)
         if product_id not in self.cart:
-            self.cart[product_id] = {"quantity": 0, "price": str(product.price)}
+            self.cart[product_id] = {
+                "quantity": 0,
+                "price": str(product.price),
+                "on_sale_price": str(product.on_sale_price),
+            }
         if override_quantity:
             self.cart[product_id]["quantity"] = quantity
         else:
@@ -72,5 +82,27 @@ class Cart(object):
 
     def get_total_price(self):
         return sum(
-            Decimal(item["price"]) * item["quantity"] for item in self.cart.values()
+            Decimal(item["on_sale_price"]) * item["quantity"]
+            if Decimal(item["on_sale_price"]) != 0
+            else Decimal(item["price"]) * item["quantity"]
+            for item in self.cart.values()
         )
+
+    @property
+    def coupon(self):
+        if self.coupon_id:
+            try:
+                return Coupon.objects.get(id=self.coupon_id)
+            except Coupon.DoesNotExist:
+                pass
+        return None
+
+    def get_discount(self):
+        if self.coupon:
+            return round(
+                (self.coupon.discount / Decimal(100)) * self.get_total_price(), 0
+            )
+        return Decimal(0)
+
+    def get_total_price_after_discount(self):
+        return self.get_total_price() - self.get_discount()

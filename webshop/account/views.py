@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import LoginForm, UserRegistrationForm, UserUpdateForm, AddressUpdateForm
 from orders.models import Order
+from shop.models import Category
 from .models import Address
 from django.shortcuts import get_object_or_404
 
@@ -126,6 +127,7 @@ def user_profile(request):
     user = User.objects.get(username=username)
     # address = get_object_or_404(Address, user=user)
     address = Address.objects.filter(user__in=User.objects.filter(username=username))
+    categories = Category.objects.all()
     # shipping_address = address.filter(address_type="s")
     # billing_address = address.filter(address_type="b")
     # orders = get_object_or_404(Order, user=user)
@@ -165,6 +167,7 @@ def user_profile(request):
         {
             "user": user,
             "address": address,
+            "categories": categories,
             # "shipping_address": shipping_address,
             # "billing_address": billing_address,
             "a_form": a_form,

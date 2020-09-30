@@ -2,6 +2,9 @@ from django.db import models
 from shop.models import Product
 from django.conf import settings
 from account.models import Address
+from coupons.models import Coupon
+from django.core.validators import MinValueValidator, MaxValueValidator
+from decimal import Decimal
 
 
 class Order(models.Model):
@@ -12,11 +15,19 @@ class Order(models.Model):
     last_name = models.CharField(max_length=50)
     email = models.EmailField()
     address = models.CharField(max_length=250)
+    address2 = models.CharField(max_length=250, blank=True)
     postal_code = models.CharField(max_length=20)
     city = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
+    same_billing = models.BooleanField(default=False)
+    coupon = models.ForeignKey(
+        Coupon, related_name="orders", null=True, blank=True, on_delete=models.SET_NULL
+    )
+    discount = models.IntegerField(
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
+    )
 
     class Meta:
         ordering = ("-created",)
@@ -25,10 +36,8 @@ class Order(models.Model):
         return f"Order {self.id}"
 
     def get_total_cost(self):
-        if item.sale() == True:
-            return sum(item.get_onsale_cost() for item in self.items.all())
-        else:
-            return sum(item.get_cost() for item in self.items.all())
+        total_cost = sum(item.get_cost() for item in self.items.all())
+        return total_cost - total_cost * (self.discount / Decimal(100))
 
 
 class OrderItem(models.Model):

@@ -1,12 +1,14 @@
 from django.urls import path
-from shop.api.views import ProductListView, OrderListView, OrderItemListView
+from shop.api.views import (
+    ProductListView,
+    OrderListView,
+)
 from django.conf.urls import url, include
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r"products", ProductListView, basename="product_list")
 router.register(r"orders", OrderListView, basename="order_list")
-router.register(r"orderitems", OrderItemListView, basename="order_items")
 
 app_name = "shop"
 

@@ -1,26 +1,9 @@
 from django import forms
-from .models import Order
 
 
-class OrderCreateForm(forms.ModelForm):
-    class Meta:
-        model = Order
-        fields = [
-            "first_name",
-            "last_name",
-            "email",
-            "address",
-            "postal_code",
-            "city",
-        ]
-
-        widgets = {
-            "first_name": forms.TextInput(attrs={"class": "form-control"}),
-            "last_name": forms.TextInput(attrs={"class": "form-control"}),
-            "email": forms.EmailInput(
-                attrs={"class": "form-control", "placeholder": "name@example.com"}
-            ),
-            "address": forms.TextInput(attrs={"class": "form-control"}),
-            "postal_code": forms.TextInput(attrs={"class": "form-control"}),
-            "city": forms.TextInput(attrs={"class": "form-control"}),
-        }
+class BillingAddressCreateForm(forms.Form):
+    same_billing = forms.BooleanField()
+    billing_street_address = forms.CharField(max_length=200)
+    billing_apartment_address = forms.CharField(max_length=100)
+    billing_postal_code = forms.CharField(max_length=30)
+    billing_city = forms.CharField(max_length=100)

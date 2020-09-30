@@ -21,6 +21,9 @@
             <!--<h3>{{ a.address_type }}</h3>-->
             {% endfor %}
         </div>
+    </div>
+
+    <div class="row">
         <div class="col">
             {% for o in orders %}
             <h3>Order number: {{ o.id }}</h3>
@@ -35,7 +38,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mt-3 pt-2">
         <div class="col">
             <!-- Address Button trigger modal -->
             {% if address %}
