@@ -84,3 +84,15 @@ def on_sale_view(request):
             "cart_product_form": cart_product_form,
         },
     )
+
+
+def contact_view(request):
+    categories = Category.objects.all()
+
+    return render(request, "shop/contact.html", {"categories": categories},)
+
+
+def about_view(request):
+    categories = Category.objects.all()
+
+    return render(request, "shop/about.html", {"categories": categories},)

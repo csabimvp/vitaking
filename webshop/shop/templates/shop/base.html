@@ -48,10 +48,10 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Rólunk</a>
+                    <a class="nav-link" href="{% url "shop:about" %}">Rólunk</a>
                 </li>
                 <li class="nav-item mr-sm-2">
-                    <a class="nav-link" href="#">Kapcsolat</a>
+                    <a class="nav-link" href="{% url "shop:contact" %}">Kapcsolat</a>
                 </li>
             </ul>
         </div>
@@ -121,10 +121,24 @@
     <!--/ Footer Start /-->
     <footer class="footer mt-auto py-3">
         <div class="row text-center padding">
-            <div class="col-12">
+            <div class="col-6">
                 <img src="{% static 'img/vitaminkiraly-vitamin-webaruhaz.png' %}" alt="">
                 <p><strong>Vitaking - Budaörs Szabadság út 58.</strong></p>
                 <p>Tel: +36 30 853 5626</p>
+                <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/vitakingbudaors"><i
+                        class="fab fa-facebook"></i></a>
+                <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/vitaminkingbudaors/"><i
+                        class="fab fa-instagram"></i></a>
+            </div>
+            <div class="col-6">
+                <h5>Nyitvatartás</h5>
+                <p>Hétfő 10:00–19:00</p>
+                <p>Kedd 10:00–19:00</p>
+                <p>Szerda 10:00–19:00</p>
+                <p>Csütörtök 10:00–19:00</p>
+                <p>Péntek 10:00–19:00</p>
+                <p>Szombat <i>Zárva</i></p>
+                <p>Vasárnap <i>Zárva</i></p>
             </div>
             <div class="col-12 social padding">
                 <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/vitakingbudaors"><i
