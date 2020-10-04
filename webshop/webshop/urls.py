@@ -10,6 +10,7 @@ urlpatterns = [
     path("account/", include("account.urls", namespace="account")),
     path("coupons/", include("coupons.urls", namespace="apply")),
     path("api/", include("shop.api.urls", namespace="api")),
+    path("payment/", include("payment.urls", namespace="payment")),
     path("", include("shop.urls", namespace="shop")),
 ]
 

@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <span class="text-muted">Your cart</span>
+                <span class="text-muted">Kosár</span>
                 <span class="badge badge-secondary badge-pill">{{ cart|length }}</span>
             </h4>
             <ul class="list-group mb-3">
@@ -36,9 +36,11 @@
                     <span class="text-success">- {{ cart.get_discount|floatformat:0 }} Ft.</span>
                 </li>
                 {% endif %}
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Végösszeg:</span>
+                    <strong>{{ cart.get_total_price_after_discount|intcomma }} Ft.</strong>
+                </li>
             </ul>
-            <p class="total-price"><strong>Végösszeg:
-                    {{ cart.get_total_price_after_discount|intcomma }} Ft.</strong></p>
         </div>
         <div class="col-md-8 order-md-1">
             <h4 class="mb-3">Áttekintés</h4>
@@ -158,13 +160,15 @@
                     </div>
                 </div>-->
             <hr class="mb-4">
-            <form method="post">
-                <div class="custom-control custom-checkbox">
-                    {{ form.as_p }}
-                </div>
-                {% csrf_token %}
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
-            </form>
+            <div class="container mt-3 pt-2">
+                <form method="post">
+                    <div class="custom-control custom-checkbox">
+                        {{ form.as_p }}
+                    </div>
+                    {% csrf_token %}
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Rendelés</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

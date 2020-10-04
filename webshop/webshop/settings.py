@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "shop.apps.ShopConfig",
     "cart.apps.CartConfig",
     "coupons.apps.CouponsConfig",
+    "payment.apps.PaymentConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -129,4 +130,25 @@ ABSOLUTE_URL_OVERRIDES = {
 }
 
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# E-mail
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = config["EMAIL_HOST_USER"]
+EMAIL_HOST_PASSWORD = config["EMAIL_HOST_PASSWORD"]
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+
+# Braintree settings
+BRAINTREE_MERCHANT_ID = config["MERCHANT_ID"]
+BRAINTREE_PUBLIC_KEY = config["PUBLIC_KEY"]
+BRAINTREE_PRIVATE_KEY = config["PRIVATE_KEY"]
+
+import braintree
+
+BRAINTREE_CONF = braintree.Configuration(
+    braintree.Environment.Sandbox,
+    BRAINTREE_MERCHANT_ID,
+    BRAINTREE_PUBLIC_KEY,
+    BRAINTREE_PRIVATE_KEY,
+)

@@ -25,9 +25,8 @@ class Order(models.Model):
     coupon = models.ForeignKey(
         Coupon, related_name="orders", null=True, blank=True, on_delete=models.SET_NULL
     )
-    discount = models.IntegerField(
-        default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]
-    )
+    discount = models.IntegerField(default=0)
+    braintree_id = models.CharField(max_length=250, blank=True)
 
     class Meta:
         ordering = ("-created",)

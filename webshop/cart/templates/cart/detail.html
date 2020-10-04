@@ -82,12 +82,12 @@
         </table>
     </div>
     <div class="row mt-3 pt-2">
-        <h3>Apply a coupon:</h3>
+        <h3>Kupon kód:</h3>
         <form action="{% url "coupons:apply" %}" method="post">
             <div class="input-group">
                 {{ coupon_apply_form }}
                 {% csrf_token %}
-                <button type="submit" class="btn btn-success">Redeem</button>
+                <button type="submit" class="btn btn-success">Beváltás</button>
             </div>
         </form>
     </div>
