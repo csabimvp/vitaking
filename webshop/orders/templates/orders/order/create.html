@@ -160,17 +160,61 @@
                     </div>
                 </div>-->
             <hr class="mb-4">
-            <div class="container mt-3 pt-2">
-                <form method="post">
-                    <div class="custom-control custom-checkbox">
-                        {{ form.as_p }}
+
+            <form method="post">
+                <div class="mb-3">
+                    <h4 class="mb-3">Számlázási cím</h4>
+                    {{ form.non_field_errors }}
+                    {{ form.same_billing.errors }}
+                    {{ form.same_billing }}
+                    <label class="form-check-label" for="{{ form.same_billing.id_for_label }}">
+                        A számlázási cím megegyezik a szállítási címmel.
+                    </label>
+                </div>
+                <div id="myDIV">
+                    <div class="mb-3" id="myDIV">
+                        {{ form.billing_street_address.errors }}
+                        <label for="{{ form.billing_street_address.id_for_label }}">Számlázási cím</label>
+                        {{ form.billing_street_address }}
                     </div>
-                    {% csrf_token %}
-                    <button class="btn btn-primary btn-lg btn-block" type="submit">Rendelés</button>
-                </form>
-            </div>
+                    <div class="mb-3" id="myDIV">
+                        {{ form.billing_apartment_address.errors }}
+                        <label for="{{ form.billing_apartment_address.id_for_label }}">Address2</label>
+                        {{ form.billing_apartment_address }}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3" id="myDIV">
+                            {{ form.billing_city.errors }}
+                            <label for="{{ form.billing_city.id_for_label }}">Város</label>
+                            {{ form.billing_city }}
+                        </div>
+                        <div class="col-md-6 mb-3" id="myDIV">
+                            {{ form.billing_postal_code.errors }}
+                            <label for="{{ form.billing_postal_code.id_for_label }}">Irányítószám</label>
+                            {{ form.billing_postal_code }}
+                        </div>
+                    </div>
+                </div>
+                {% csrf_token %}
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Rendelés</button>
+            </form>
+
+
         </div>
     </div>
 </div>
+</div>
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("myDIV");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
 
 {% endblock %}

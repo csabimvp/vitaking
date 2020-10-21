@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from .models import OrderItem, Order
 from .forms import BillingAddressCreateForm
 from cart.cart import Cart
-from django.contrib.auth.decorators import login_required, staff_member_required
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 from account.models import Address, BillingAddress
@@ -38,6 +39,11 @@ def order_create(request):
             },
         )
 
+        if cart.coupon == None:
+            disc = 0
+        else:
+            disc = cart.coupon.discount
+
         if form.is_valid():
             Order.objects.create(
                 user=user,
@@ -49,7 +55,7 @@ def order_create(request):
                 postal_code=address.postal_code,
                 city=address.city,
                 coupon=cart.coupon,
-                discount=cart.coupon.discount,
+                discount=disc,
             )
             # form.instance.user = user
             # form.instance.first_name = user.first_name

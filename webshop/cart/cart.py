@@ -78,7 +78,11 @@ class Cart(object):
     def clear(self):
         # remove cart from session
         del self.session[settings.CART_SESSION_ID]
-        del self.session["coupon_id"]
+        if self.coupon_id:
+            try:
+                del self.session["coupon_id"]
+            except:
+                pass
         self.save()
 
     def get_total_price(self):
@@ -100,8 +104,11 @@ class Cart(object):
 
     def get_discount(self):
         if self.coupon:
-            return round(
-                (self.coupon.discount / Decimal(100)) * self.get_total_price(), 0
+            return sum(
+                round((self.coupon.discount / Decimal(100)) * Decimal(item["price"]), 0)
+                if Decimal(item["on_sale_price"]) == 0
+                else 0 * Decimal(item["on_sale_price"])
+                for item in self.cart.values()
             )
         return Decimal(0)
 
