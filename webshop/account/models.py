@@ -19,18 +19,3 @@ class Address(models.Model):
     class Meta:
         # unique_together = [["user", "address_type"]]
         verbose_name_plural = "Addresses"
-
-
-class BillingAddress(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    billing_street_address = models.CharField(max_length=200)
-    billing_apartment_address = models.CharField(max_length=100, blank=True)
-    billing_postal_code = models.CharField(max_length=30)
-    billing_city = models.CharField(max_length=100)
-    # address_type = models.CharField(
-    # max_length=2, choices=ADDRESS_CHOICES, default="S", unique=True
-    # )
-
-    class Meta:
-        # unique_together = [["user", "address_type"]]
-        verbose_name_plural = "Billing Addresses"

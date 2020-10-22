@@ -22,6 +22,6 @@ def coupon_apply(request):
             messages.success(request, "Kupon sikeresen beváltva")
         except Coupon.DoesNotExist:
             request.session["coupon_id"] = None
-            messages.warning(request, "Kupon nem letezik")
+            messages.warning(request, "A megadott kupon nem létezik")
     return redirect("cart:cart_detail")
 

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from shop.models import Product
-from orders.models import Order, OrderItem
+from orders.models import Order, OrderItem, BillingAddress
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -28,8 +28,20 @@ class OrderItemSerializer(serializers.ModelSerializer):
         ]
 
 
+class BillingAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BillingAddress
+        fields = [
+            "billing_street_address",
+            "billing_apartment_address",
+            "billing_city",
+            "billing_postal_code",
+        ]
+
+
 class OrderSerializer(serializers.ModelSerializer):
     products = OrderItemSerializer(many=True, read_only=True, source="items")
+    billing = BillingAddressSerializer(many=True, read_only=True)
 
     class Meta:
         model = Order
@@ -43,10 +55,10 @@ class OrderSerializer(serializers.ModelSerializer):
             "address",
             "address2",
             "postal_code",
-            "same_billing",
             "paid",
             "created",
             "coupon",
             "get_total_cost",
             "products",
+            "billing",
         ]

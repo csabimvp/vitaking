@@ -21,7 +21,6 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
-    same_billing = models.BooleanField(default=False)
     coupon = models.ForeignKey(
         Coupon, related_name="orders", null=True, blank=True, on_delete=models.SET_NULL
     )
@@ -62,3 +61,14 @@ class OrderItem(models.Model):
 
     def get_onsale_cost(self):
         return self.product.on_sale_price * self.quantity
+
+
+class BillingAddress(models.Model):
+    order = models.ForeignKey(Order, related_name="billing", on_delete=models.CASCADE)
+    billing_street_address = models.CharField(max_length=200)
+    billing_apartment_address = models.CharField(max_length=100, blank=True)
+    billing_postal_code = models.CharField(max_length=30)
+    billing_city = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.id)

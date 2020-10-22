@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
-from .models import OrderItem, Order
+from .models import OrderItem, Order, BillingAddress
 from .forms import BillingAddressCreateForm
 from cart.cart import Cart
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.contrib.auth.models import User
-from account.models import Address, BillingAddress
+from account.models import Address
 from coupons.models import Coupon
 from .tasks import order_created
 from django.urls import reverse
@@ -57,26 +57,6 @@ def order_create(request):
                 coupon=cart.coupon,
                 discount=disc,
             )
-            # form.instance.user = user
-            # form.instance.first_name = user.first_name
-            # form.instance.last_name = user.last_name
-            # form.instance.email = user.email
-            # form.instance.address = address.street_address
-            # form.instance.address2 = address.apartment_address
-            # form.instance.city = address.city
-            # form.instance.postal_code = address.postal_code
-
-            # if form.cleaned_data["same_billing"] == True:
-            #   BillingAddress.objects.create(
-            #      user=user,
-            #     billing_street_address=address.street_address,
-            #    billing_apartment_address=address.apartment_address,
-            #   billing_city=address.city,
-            #  billing_postal_code=address.postal_code,
-            # )
-
-            # else:
-            #   form.instance.user = user
 
             order = Order.objects.latest("id")
 
@@ -86,6 +66,25 @@ def order_create(request):
                     product=item["product"],
                     price=item["price"],
                     quantity=item["quantity"],
+                )
+
+            if form.cleaned_data["same_billing"] == True:
+                BillingAddress.objects.create(
+                    order=order,
+                    billing_street_address=address.street_address,
+                    billing_apartment_address=address.apartment_address,
+                    billing_city=address.city,
+                    billing_postal_code=address.postal_code,
+                )
+            else:
+                BillingAddress.objects.create(
+                    order=order,
+                    billing_street_address=form.cleaned_data["billing_street_address"],
+                    billing_apartment_address=form.cleaned_data[
+                        "billing_apartment_address"
+                    ],
+                    billing_city=form.cleaned_data["billing_city"],
+                    billing_postal_code=form.cleaned_data["billing_postal_code"],
                 )
 
             cart.clear()
