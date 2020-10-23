@@ -27,11 +27,14 @@ def user_login(request):
                     # return HttpResponse("Authenticated successfully")
 
                 else:
-                    messages.warning(request, f"Érvénytelen bejelentkezés.")
-                    return render(request, "account/login.html", {"form": form})
+                    messages.info(request, f"Érvénytelen bejelentkezés.")
+                    # return render(request, "account/login.html", {"form": form})
             else:
-                messages.warning(request, f"Érvénytelen bejelentkezés.")
-                return render(request, "account/login.html", {"form": form})
+                messages.info(request, f"Érvénytelen bejelentkezés.")
+                # return render(request, "account/login.html", {"form": form})
+        else:
+            messages.info(request, f"Érvénytelen bejelentkezés.")
+            # return render(request, "account/login.html", {"form": form})
     else:
         form = LoginForm()
 

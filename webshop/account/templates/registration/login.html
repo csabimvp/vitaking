@@ -37,18 +37,19 @@
     <link href="{% static "css/signin.css" %}" rel="stylesheet">
 </head>
 
-<body class="text-center">
-    {% if messages %}
-    {% for message in messages %}
+{% if messages %}
+{% for message in messages %}
 
-    <div class="container mt-3">
-        <div class="alert alert-{{ message.tags }}" role="alert">
-            {{ message }}
-        </div>
+<div class="container mt-3">
+    <div class="alert alert-{{ message.tags }}" role="alert">
+        {{ message }}
     </div>
+</div>
 
-    {% endfor %}
-    {% endif %}
+{% endfor %}
+{% endif %}
+
+<body class="text-center">
 
     <form action="{% url "account:login" %}" class="form-signin" method="POST">
         <img class="mb-4" src="{% static 'img/vitaminkiraly-vitamin-webaruhaz.png' %}" alt="">

@@ -5,3 +5,4 @@ requirements.txt
 product_photos
 /webshop/db.sqlite3
 /webshop/media
+/webshop/static
