@@ -88,9 +88,12 @@ def order_create(request):
                 )
 
             cart.clear()
+
             # launch asynchronus task
-            # order_created.delay(order.id)
+            order_created.delay(order.id)
+
             request.session["order_id"] = order.id
+
             # redirect for payment
             return redirect(reverse("payment:process"))
 
