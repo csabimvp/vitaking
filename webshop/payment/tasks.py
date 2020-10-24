@@ -1,5 +1,5 @@
 from io import BytesIO
-from celery import task
+from webshop.celery import app
 import weasyprint
 
 from django.template.loader import render_to_string
@@ -8,7 +8,7 @@ from django.conf import settings
 from orders.models import Order
 
 
-@task
+@app.task
 def payment_completed(order_id):
 
     """
