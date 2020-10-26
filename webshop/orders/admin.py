@@ -29,7 +29,6 @@ class OrderAdmin(admin.ModelAdmin):
         "city",
         "paid",
         "created",
-        "updated",
         order_pdf,
     ]
     list_filter = [
