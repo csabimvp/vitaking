@@ -35,8 +35,8 @@ def product_detail(request, id, slug):
     )
     images = ProductImage.objects.filter(id=id)
 
-    similar_products = Product.objects.filter(category=product.category).exclude(id=id)
-    similar_products = similar_products[:4]
+    on_sale_products = Product.objects.filter(on_sale=True).exclude(id=id)
+    on_sale_products = on_sale_products[:4]
 
     cart_product_form = CartAddProductForm()
 
@@ -49,7 +49,7 @@ def product_detail(request, id, slug):
         {
             "product": product,
             "categories": categories,
-            "similar_products": similar_products,
+            "on_sale_products": on_sale_products,
             "cart_product_form": cart_product_form,
             "descriptors": descriptors,
             "images": images,

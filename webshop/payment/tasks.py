@@ -19,16 +19,11 @@ def payment_completed(order_id):
 
     # Create invoice e-mail
     subject = f"VitaKing · Budaörs - Rendelés {order_id}"
-<<<<<<< HEAD
-    message = f"Csatolva küldjük a legutóbbi vásárlás számláját."
-    email = EmailMessage(subject, message, "shaba.keller@gmail.com", ["shaba.keller@gmail.com"])
-=======
     message = (
         f"Tisztelt {order.first_name},\n\n"
         f"Csatolva küldjük a legutóbbi vásárlás számláját."
     )
     email = EmailMessage(subject, message, "shaba.keller@gmail.com", [order.email])
->>>>>>> 432026af2acaaf56258a53bea368c93354e1f54b
 
     # Generate PDF
     html = render_to_string("orders/order/pdf.html", {"order": order})
