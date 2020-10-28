@@ -3,9 +3,9 @@
 <body>
     <h1>VitaKing Budaörs</h1>
     <p>
-        Számlaszám: {{ order.id }}</br>
-        <span class="text-muted">
-            {{ order.created|date:"M d, Y" }}
+        Számlaszám: <strong>{{ order.id }}</strong></br>
+        <span class="order-date">
+            {{ order.created|date:"Y M d" }}
         </span>
     </p>
 
@@ -14,7 +14,9 @@
         {{ order.first_name }} {{ order.last_name }}<br>
         {{ order.email }}<br>
         {{ order.address }}<br>
+        {% if order.address2 %}
         {{ order.address2 }}<br>
+        {% endif %}
         {{ order.city }}<br>
         {{ order.postal_code }}
     </p>
@@ -41,15 +43,18 @@
             </tr>
             {% endfor %}
             <tr class="total">
-                <td colspan="3">Végösszeg</td>
+                <td colspan="4">Végösszeg</td>
                 <td class="total-price">{{ order.get_total_cost }} Ft</td>
             </tr>
         </tbody>
     </table>
 
-    <span class="{% if order.paid %}paid{% else %}pending{% endif %}">
-        {% if order.paid %}Fizetve{% else %}Függőben levő fizetés{% endif %}
-    </span>
+    <footer>
+        <p class="footer-contact">Cím : Budaörs, Szabadság út 58, 2040 Magyarország</p>
+        <p class="footer-contact">Telefon: +36 30 853 5626</p>
+        <p class="footer-contact">E-mail: </p>
+        <p class="footer-contact">vitaking.com</p>
+    </footer>
 </body>
 
 </html>
