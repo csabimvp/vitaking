@@ -40,8 +40,8 @@ def product_detail(request, id, slug):
 
     cart_product_form = CartAddProductForm()
 
-    # r = Recommender()
-    # recommended_products = r.suggest_products_for([product], 4)
+    r = Recommender()
+    recommended_products = r.suggest_products_for([product], 4)
 
     return render(
         request,
@@ -53,7 +53,7 @@ def product_detail(request, id, slug):
             "cart_product_form": cart_product_form,
             "descriptors": descriptors,
             "images": images,
-            # "recommended_products": recommended_products,
+            "recommended_products": recommended_products,
         },
     )
 
