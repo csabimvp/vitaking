@@ -16,5 +16,5 @@ def order_created(order_id):
         f"Sikeresen leadott egy megrendelést."
         f"A megrendelés azonosítója {order.id}."
     )
-    mail_sent = send_mail(subject, message, "shaba.keller@gmail.com", [order.email])
+    mail_sent = send_mail(subject, message, "shaba.keller@gmail.com", ["shaba.keller@gmail.com"])
     return mail_sent

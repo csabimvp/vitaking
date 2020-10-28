@@ -5,3 +5,17 @@ product_photos
 /webshop/db.sqlite3
 /webshop/media
 /webshop/static
+/webshop/account/__pycache__
+/webshop/account/migrations
+/webshop/cart/__pycache__
+/webshop/cart/migrations/
+/webshop/coupons/__pycache__
+/webshop/coupons/migrations
+/webshop/orders/__pycache__
+/webshop/orders/migrations
+/webshop/payment/__pycache__
+/webshop/payment/migrations
+/webshop/shop/__pycache__
+/webshop/shop/migrations
+**/migrations/**
+**/**/__pycache__
