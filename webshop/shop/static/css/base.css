@@ -15,6 +15,12 @@ html, body {
     font-size: 1rem;
 }
 
+a[href^="tel:"]:before {
+    content: "\260E";
+    display: inline;
+    margin-right: 0.5em;
+}
+
 .item {
     padding: 2rem 1rem;
     position: relative;
