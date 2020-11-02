@@ -56,6 +56,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "address2",
             "postal_code",
             "paid",
+            "payment_method",
             "created",
             "coupon",
             "get_total_cost",

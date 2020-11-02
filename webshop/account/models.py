@@ -1,8 +1,8 @@
 from django.db import models
 from django.conf import settings
 
+from phonenumber_field.modelfields import PhoneNumberField
 
-# ADDRESS_CHOICES = [("S", "Shipping"), ("B", "Billing")]
 
 
 class Address(models.Model):
@@ -11,10 +11,7 @@ class Address(models.Model):
     apartment_address = models.CharField(max_length=100, blank=True)
     postal_code = models.CharField(max_length=30)
     city = models.CharField(max_length=100)
-    same_billing = models.BooleanField(default=False)
-    # address_type = models.CharField(
-    # max_length=2, choices=ADDRESS_CHOICES, default="S", unique=True
-    # )
+    phone_number = PhoneNumberField()
 
     class Meta:
         # unique_together = [["user", "address_type"]]

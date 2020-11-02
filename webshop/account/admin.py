@@ -10,7 +10,7 @@ class AddressAdmin(admin.ModelAdmin):
         "apartment_address",
         "postal_code",
         "city",
-        "same_billing"
+        "phone_number"
         # "address_type",
     ]
 

@@ -85,6 +85,25 @@ class Cart(object):
                 pass
         self.save()
 
+
+    def on_sale_savings(self):
+        total = sum(
+            Decimal(item["price"]) * item["quantity"]
+            if Decimal(item["on_sale_price"]) != 0
+            else 0
+            for item in self.cart.values()
+        )
+        
+        on_sale = sum(
+            Decimal(item["on_sale_price"]) * item["quantity"]
+            if Decimal(item["on_sale_price"]) != 0
+            else 0
+            for item in self.cart.values()
+        )
+
+        return total-on_sale
+
+
     def get_total_price(self):
         return sum(
             Decimal(item["on_sale_price"]) * item["quantity"]
@@ -105,7 +124,7 @@ class Cart(object):
     def get_discount(self):
         if self.coupon:
             return sum(
-                round((self.coupon.discount / Decimal(100)) * Decimal(item["price"]), 0)
+                round((self.coupon.discount / Decimal(100)) * Decimal(item["price"]) * item["quantity"], 0)
                 if Decimal(item["on_sale_price"]) == 0
                 else 0 * Decimal(item["on_sale_price"])
                 for item in self.cart.values()

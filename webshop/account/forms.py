@@ -80,6 +80,7 @@ class AddressUpdateForm(forms.ModelForm):
             "apartment_address",
             "postal_code",
             "city",
+            "phone_number",
             # "address_type",
         ]
 
@@ -88,5 +89,6 @@ class AddressUpdateForm(forms.ModelForm):
             "apartment_address": forms.TextInput(attrs={"class": "form-control"}),
             "postal_code": forms.TextInput(attrs={"class": "form-control"}),
             "city": forms.TextInput(attrs={"class": "form-control"}),
+            "phone_number": forms.TextInput(attrs={"class": "form-control"}),
             # "address_type": forms.Select(attrs={"class": "form-control"}),
         }

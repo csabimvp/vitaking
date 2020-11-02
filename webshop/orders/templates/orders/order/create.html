@@ -90,12 +90,26 @@
                     <h4>{{ address.postal_code }}</h4>
                 </div>
             </div>
+
+            <div class="mb-3">
+                <h3>Telefonszám</h3>
+                <h4>{{ address.phone_number }}</h4>
+            </div>
             <hr class="mb-4">
 
             <form method="post">
+                {{ form.non_field_errors }}
+                <div class="mb-3">
+                    <h4 class="mb-3">Fizetési opciók</h4>
+                    <div class="mb-3">
+                        <li>{{ form.payment_method.0 }}</li>
+                        <li>{{ form.payment_method.1 }}</li>
+                        <li>{{ form.payment_method.2 }}</li>
+                    </div>
+                </div>
+                <hr class="mb-4">
                 <div class="mb-3">
                     <h4 class="mb-3">Számlázási cím</h4>
-                    {{ form.non_field_errors }}
                     {{ form.same_billing.errors }}
                     {{ form.same_billing }}
                     <label class="form-check-label" for="{{ form.same_billing.id_for_label }}">
@@ -110,7 +124,7 @@
                     </div>
                     <div class="mb-3" id="myDIV">
                         {{ form.billing_apartment_address.errors }}
-                        <label for="{{ form.billing_apartment_address.id_for_label }}">Address2</label>
+                        <label for="{{ form.billing_apartment_address.id_for_label }}">Épület, emelet</label>
                         {{ form.billing_apartment_address }}
                     </div>
                     <div class="row">

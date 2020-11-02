@@ -56,6 +56,7 @@ def order_create(request):
                 city=address.city,
                 coupon=cart.coupon,
                 discount=disc,
+                payment_method=form.cleaned_data["payment_method"],
             )
 
             order = Order.objects.latest("id")
@@ -94,8 +95,14 @@ def order_create(request):
 
             request.session["order_id"] = order.id
 
-            # redirect for payment
-            return redirect(reverse("payment:process"))
+            #Payment option is cash after delivery:
+            if form.cleaned_data["payment_method"] == "3":
+                #print(form.cleaned_data["payment_method"])
+                return render(request, 'orders/order/created.html', {'order': order})
+            else:
+                # redirect for credit / debit card payment
+                print(form.cleaned_data["payment_method"])
+                return redirect(reverse("payment:process"))
 
     else:
         form = BillingAddressCreateForm()
