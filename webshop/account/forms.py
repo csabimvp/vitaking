@@ -85,10 +85,20 @@ class AddressUpdateForm(forms.ModelForm):
         ]
 
         widgets = {
-            "street_address": forms.TextInput(attrs={"class": "form-control"}),
-            "apartment_address": forms.TextInput(attrs={"class": "form-control"}),
-            "postal_code": forms.TextInput(attrs={"class": "form-control"}),
-            "city": forms.TextInput(attrs={"class": "form-control"}),
-            "phone_number": forms.TextInput(attrs={"class": "form-control"}),
+            "street_address": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Cím, házszám"}
+            ),
+            "apartment_address": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Emelet, ajtószám"}
+            ),
+            "postal_code": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Irányítószám"}
+            ),
+            "city": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Város"}
+            ),
+            "phone_number": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "+36308535626"}
+            ),
             # "address_type": forms.Select(attrs={"class": "form-control"}),
         }

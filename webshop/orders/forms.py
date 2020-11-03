@@ -1,6 +1,6 @@
 from django import forms
 
-CHOICES = [('1', 'Hitelkártya'), ('2', 'Bankkártya'), ('3', 'Postai utánvétel')]
+CHOICES = [("1", "Hitelkártya"), ("2", "Bankkártya"), ("3", "Postai utánvétel")]
 
 
 class BillingAddressCreateForm(forms.Form):
@@ -14,16 +14,14 @@ class BillingAddressCreateForm(forms.Form):
 
     payment_method = forms.ChoiceField(
         choices=CHOICES,
-        widget=forms.RadioSelect(
-            attrs={"class": "form-check-input", "type": "radio"}
-        ),
+        widget=forms.RadioSelect(attrs={"class": "form-check-input", "type": "radio"}),
     )
 
     billing_street_address = forms.CharField(
         max_length=200,
         required=False,
         widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "Számlázási cím, házszám",}
+            attrs={"class": "form-control", "placeholder": "Számlázási cím, házszám"}
         ),
     )
     billing_apartment_address = forms.CharField(
@@ -45,4 +43,3 @@ class BillingAddressCreateForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Város"}),
     )
-

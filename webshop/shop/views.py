@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404
+from django.contrib.postgres.search import SearchVector
 from .models import Category, Product, ProductDescription, ProductImage
 from cart.forms import CartAddProductForm
 from .recommender import Recommender
+from .forms import SearchForm
 
 
 def product_list(request, category_slug=None):
@@ -94,10 +96,41 @@ def on_sale_view(request):
 def contact_view(request):
     categories = Category.objects.all()
 
-    return render(request, "shop/contact.html", {"categories": categories},)
+    return render(
+        request,
+        "shop/contact.html",
+        {"categories": categories},
+    )
 
 
 def about_view(request):
     categories = Category.objects.all()
 
-    return render(request, "shop/about.html", {"categories": categories},)
+    return render(
+        request,
+        "shop/about.html",
+        {"categories": categories},
+    )
+
+
+def product_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+
+    categories = Category.objects.all()
+
+    if "query" in request.GET:
+        form = SearchForm(request.GET)
+
+        if form.is_valid():
+            query = form.cleaned_data["query"]
+            results = Product.objects.annotate(
+                search=SearchVector("name", "description"),
+            ).filter(search=query)
+
+    return render(
+        request,
+        "shop/kereses.html",
+        {"categories": categories, "form": form, "query": query, "results": results},
+    )

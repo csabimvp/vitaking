@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from account.models import Address
 from coupons.models import Coupon
+from shop.recommender import Recommender
 from .tasks import order_created
 from django.urls import reverse
 from django.conf import settings
@@ -88,6 +89,13 @@ def order_create(request):
                     billing_postal_code=form.cleaned_data["billing_postal_code"],
                 )
 
+            # Adding products bought to the recommender engine.
+            r = Recommender()
+            products_bought = [item["product"] for item in cart]
+            print(products_bought)
+            r.products_bought(products_bought)
+
+            # Deleting items from the cart.
             cart.clear()
 
             # launch asynchronus task
@@ -95,13 +103,11 @@ def order_create(request):
 
             request.session["order_id"] = order.id
 
-            #Payment option is cash after delivery:
+            # Payment option is cash after delivery:
             if form.cleaned_data["payment_method"] == "3":
-                #print(form.cleaned_data["payment_method"])
-                return render(request, 'orders/order/created.html', {'order': order})
+                return render(request, "orders/order/created.html", {"order": order})
             else:
                 # redirect for credit / debit card payment
-                print(form.cleaned_data["payment_method"])
                 return redirect(reverse("payment:process"))
 
     else:

@@ -1,13 +1,13 @@
 from django import forms
 
 
-class CouponApplyForm(forms.Form):
-    code = forms.CharField(
+class SearchForm(forms.Form):
+    query = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "id": "inputCoupon",
+                "id": "searchfield",
                 "class": "form-control mr-sm-2",
-                "placeholder": "Kupon kód",
+                "placeholder": "Keresés...",
             }
         ),
         label=False,
