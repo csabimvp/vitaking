@@ -7,7 +7,7 @@ class CouponApplyForm(forms.Form):
             attrs={
                 "id": "inputCoupon",
                 "class": "form-control mr-sm-2",
-                "placeholder": "Kupon kód",
+                "placeholder": "Kupon kód beváltása...",
             }
         ),
         label=False,

@@ -7,7 +7,10 @@ PRODUCT_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, 21)]
 class CartAddProductForm(forms.Form):
     quantity = forms.TypedChoiceField(
         widget=forms.Select(
-            attrs={"class": "form-control", "id": "exampleFormControlSelect1",}
+            attrs={
+                "class": "form-control",
+                "id": "addtocartform",
+            }
         ),
         choices=PRODUCT_QUANTITY_CHOICES,
         coerce=int,

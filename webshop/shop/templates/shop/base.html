@@ -86,6 +86,25 @@
                     <a class="nav-link" href="{% url "account:logout" %}">Kilépés</a>
                 </li>
                 {% else %}
+                <li class="nav-item" id="cart">
+
+                    {% with total_items=cart|length %}
+                    {% if total_items > 0 %}
+                    <a href="{% url "cart:cart_detail" %}" class="nav-link">
+                        <span class="badge badge-danger mr-1">{{ total_items }}</span>
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="clearfix d-none d-sm-inline-block">Kosár</span>
+                    </a>
+                    {% else %}
+                    <a href="{% url "cart:cart_detail" %}" class="nav-link">
+                        <span class="badge badge-light mr-1">0</span>
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="clearfix d-none d-sm-inline-block">Kosár</span>
+                    </a>
+                    {% endif %}
+                    {% endwith %}
+
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url "account:login" %}">Bejelentkezés</a>
                 </li>
@@ -125,7 +144,7 @@
         <div class="row text-center padding">
             <div class="col-12">
                 <img src="{% static 'img/vitaminkiraly-vitamin-webaruhaz.png' %}" alt="">
-                <p><strong>Vitaking - Budaörs Szabadság út 58.</strong></p>
+                <p><i class="fas fa-map-marker-alt"></i><strong> Vitaking - Budaörs Szabadság út 58.</strong></p>
                 <a href="tel:+36308535626">+36 30 853 5626</a>
             </div>
             <div class="col-12 social padding">
@@ -142,13 +161,17 @@
     <!-- Optional JavaScript -->
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
+    <script src="{% static "js/jquery-3.5.1.min.js" %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
         crossorigin="anonymous"></script>
     <script src="{% static "js/bootstrap.js" %}"></script>
+
+    <script>
+        $(window).on("load", function () {
+            $(".loader-wrapper").fadeOut("slow");
+        });
+    </script>
 </body>
 
 </html>

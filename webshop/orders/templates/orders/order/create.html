@@ -43,118 +43,120 @@
             </ul>
         </div>
         <div class="col-md-8 order-md-1">
-            <h4 class="mb-3">Áttekintés</h4>
+
             <hr class="mb-4">
+            <h4 class="mb-3"><strong>Áttekintés</strong></h4>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <h3>Keresztnév</h3>
+                    <h3 class="text-muted">Keresztnév</h3>
                     <h4>{{ user.first_name }}</h4>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <h3 for="lastName">Vezetéknév</h3>
+                    <h3 class="text-muted">Vezetéknév</h3>
                     <h4>{{ user.last_name }}</h4>
                 </div>
             </div>
 
             <div class="mb-3">
-                <h3>Felhasználónév</h3>
+                <h3 class="text-muted">Felhasználónév</h3>
                 <h4>{{ user.username }}</h4>
             </div>
 
             <div class="mb-3">
-                <h3>Email</h3>
+                <h3 class="text-muted">Email</h3>
                 <h4>{{ user.email }}</h4>
             </div>
             <hr class="mb-4">
 
             {% if address %}
-            <h4 class="mb-3">Szállítási cím</h4>
+            <h4 class="mb-3"><strong>Szállítási cím</strong></h4>
             <div class="mb-3">
-                <h3>Cím</h3>
+                <h3 class="text-muted">Cím</h3>
                 <h4>{{ address.street_address }}</h4>
             </div>
             {% if address.apartmant_address %}
-            <div class="mb-3">
-                <h3">Cím 2</h3>
+            <div class="text-muted mb-3">
+                <h3 class="text-muted"">Cím 2</h3>
                     <h4>{{ address.apartmant_address }}</h4>
             </div>
-            <hr class="mb-4">
-            {% endif %}
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <h3>Város</h3>
-                    <h4>{{ address.city }}</h4>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <h3>Irányítószám</h3>
-                    <h4>{{ address.postal_code }}</h4>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <h3>Telefonszám</h3>
-                <h4>{{ address.phone_number }}</h4>
-            </div>
-            <hr class="mb-4">
-
-            <form method="post">
-                {{ form.non_field_errors }}
-                <div class="mb-3">
-                    <h4 class="mb-3">Fizetési opciók</h4>
-                    <div class="mb-3">
-                        <li>{{ form.payment_method.0 }}</li>
-                        <li>{{ form.payment_method.1 }}</li>
-                        <li>{{ form.payment_method.2 }}</li>
-                    </div>
-                </div>
-                <hr class="mb-4">
-                <div class="mb-3">
-                    <h4 class="mb-3">Számlázási cím</h4>
-                    {{ form.same_billing.errors }}
-                    {{ form.same_billing }}
-                    <label class="form-check-label" for="{{ form.same_billing.id_for_label }}">
-                        A számlázási cím megegyezik a szállítási címmel.
-                    </label>
-                </div>
-                <div id="myDIV">
-                    <div class="mb-3" id="myDIV">
-                        {{ form.billing_street_address.errors }}
-                        <label for="{{ form.billing_street_address.id_for_label }}">Számlázási cím</label>
-                        {{ form.billing_street_address }}
-                    </div>
-                    <div class="mb-3" id="myDIV">
-                        {{ form.billing_apartment_address.errors }}
-                        <label for="{{ form.billing_apartment_address.id_for_label }}">Épület, emelet</label>
-                        {{ form.billing_apartment_address }}
-                    </div>
+            <hr class=" mb-4">
+                    {% endif %}
                     <div class="row">
-                        <div class="col-md-6 mb-3" id="myDIV">
-                            {{ form.billing_city.errors }}
-                            <label for="{{ form.billing_city.id_for_label }}">Város</label>
-                            {{ form.billing_city }}
+                        <div class="col-md-6 mb-3">
+                            <h3 class="text-muted">Város</h3>
+                            <h4>{{ address.city }}</h4>
                         </div>
-                        <div class="col-md-6 mb-3" id="myDIV">
-                            {{ form.billing_postal_code.errors }}
-                            <label for="{{ form.billing_postal_code.id_for_label }}">Irányítószám</label>
-                            {{ form.billing_postal_code }}
+                        <div class="col-md-6 mb-3">
+                            <h3 class="text-muted">Irányítószám</h3>
+                            <h4>{{ address.postal_code }}</h4>
                         </div>
                     </div>
-                </div>
-                {% csrf_token %}
-                <hr class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Rendelés</button>
-            </form>
 
-            {% else %}
-            <h2 class="mt-3 pt-2">A megrendelés folytatásához kérjük adja meg a szállítási címet a profiljában</h2>
-            <a href="{% url "account:user_profile" %}" class="btn btn-danger mt-2">Profil
-                szerkesztése</a>
-            <hr class="mb-4">
-            {% endif %}
+                    <div class="mb-3">
+                        <h3 class="text-muted">Telefonszám</h3>
+                        <h4>{{ address.phone_number }}</h4>
+                    </div>
+                    <hr class="mb-4">
 
+                    <form method="post">
+                        {{ form.non_field_errors }}
+                        <div class="mb-3">
+                            <h4 class="mb-3"><strong>Fizetési opciók</strong></h4>
+                            <div class="mb-3">
+                                <li>{{ form.payment_method.0 }}</li>
+                                <li>{{ form.payment_method.1 }}</li>
+                                <li>{{ form.payment_method.2 }}</li>
+                            </div>
+                        </div>
+                        <hr class="mb-4">
+                        <div class="mb-3">
+                            <h4 class="mb-3"><strong>Számlázási cím</strong></h4>
+                            {{ form.same_billing.errors }}
+                            {{ form.same_billing }}
+                            <label class="form-check-label" for="{{ form.same_billing.id_for_label }}">
+                                A számlázási cím megegyezik a szállítási címmel.
+                            </label>
+                        </div>
+                        <div id="myDIV">
+                            <div class="mb-3" id="myDIV">
+                                {{ form.billing_street_address.errors }}
+                                <label for="{{ form.billing_street_address.id_for_label }}">Számlázási cím</label>
+                                {{ form.billing_street_address }}
+                            </div>
+                            <div class="mb-3" id="myDIV">
+                                {{ form.billing_apartment_address.errors }}
+                                <label for="{{ form.billing_apartment_address.id_for_label }}">Épület, emelet</label>
+                                {{ form.billing_apartment_address }}
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3" id="myDIV">
+                                    {{ form.billing_city.errors }}
+                                    <label for="{{ form.billing_city.id_for_label }}">Város</label>
+                                    {{ form.billing_city }}
+                                </div>
+                                <div class="col-md-6 mb-3" id="myDIV">
+                                    {{ form.billing_postal_code.errors }}
+                                    <label for="{{ form.billing_postal_code.id_for_label }}">Irányítószám</label>
+                                    {{ form.billing_postal_code }}
+                                </div>
+                            </div>
+                        </div>
+                        {% csrf_token %}
+                        <hr class="mb-4">
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">Rendelés</button>
+                    </form>
+
+                    {% else %}
+                    <h2 class="mt-3 pt-2">A megrendelés folytatásához kérjük adja meg a szállítási címet a profiljában
+                    </h2>
+                    <a href="{% url "account:user_profile" %}" class="btn btn-danger mt-2">Profil
+                        szerkesztése</a>
+                    <hr class="mb-4">
+                    {% endif %}
+
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 <script>

@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import LoginForm, UserRegistrationForm, UserUpdateForm, AddressUpdateForm
-from orders.models import Order
+from orders.models import Order, OrderItem
 from shop.models import Category
 from .models import Address
 from django.shortcuts import get_object_or_404
@@ -68,28 +68,6 @@ def register(request):
 
 
 @login_required
-def duser_profile(request):
-    username = request.user.username
-    user = User.objects.get(username=username)
-    # address = get_object_or_404(Address, user=user)
-    address = Address.objects.filter(user__in=User.objects.filter(username=username))
-    shipping_address = address.filter(address_type="s")
-    billing_address = address.filter(address_type="b")
-    # orders = get_object_or_404(Order, user=user)
-
-    return render(
-        request,
-        "account/detail.html",
-        {
-            "user": user,
-            "address": address,
-            "shipping_address": shipping_address,
-            "billing_address": billing_address,
-        },
-    )
-
-
-@login_required
 def user_profile_edit(request):
     if request.method == "POST":
 
@@ -126,14 +104,18 @@ def user_profile_edit(request):
 
 @login_required
 def user_profile(request):
+    # Getting User ID
     username = request.user.username
     user = User.objects.get(username=username)
-    # address = get_object_or_404(Address, user=user)
+
+    # Getting Addres to create object or update existing one.
     address = Address.objects.filter(user__in=User.objects.filter(username=username))
     categories = Category.objects.all()
-    # shipping_address = address.filter(address_type="s")
-    # billing_address = address.filter(address_type="b")
-    # orders = get_object_or_404(Order, user=user)
+
+    # Getting past order list.
+    orders = Order.objects.filter(user__in=User.objects.filter(username=username))[:4]
+    ordered_items = OrderItem.objects.filter(order__in=orders)
+
     if request.method == "POST":
         try:
             usr = request.user.id
@@ -171,8 +153,8 @@ def user_profile(request):
             "user": user,
             "address": address,
             "categories": categories,
-            # "shipping_address": shipping_address,
-            # "billing_address": billing_address,
+            "orders": orders,
+            "ordered_items": ordered_items,
             "a_form": a_form,
         },
     )

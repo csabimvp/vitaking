@@ -26,21 +26,6 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col">
-            {% for o in orders %}
-            <h3>Order number: {{ o.id }}</h3>
-            <ul>
-                {% for oi in order_items %}
-                <li>{{ oi.product }}</li>
-                <li>{{ oi.price }}</li>
-                <li>{{ oi.quantity }}</li>
-                {% endfor %}
-            </ul>
-            {% endfor %}
-        </div>
-    </div>
-
     <div class="row mt-3 pt-2">
         <div class="col">
             <!-- Address Button trigger modal -->
@@ -76,7 +61,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-check-label" for="{{ a_form.apartment_address.id_for_label }}">
-                                        Épület, emelet:
+                                        Épület, emelet (opcionális):
                                     </label>
                                     {{ a_form.apartment_address }}
                                 </div>
@@ -111,6 +96,45 @@
         </div>
     </div>
 
+    {% if orders %}
+    <hr class="mt-3 pt-2 mb-4">
+    <h2>Korábbi megrendelések:</h2>
+    <div class="row">
+        <div class="col">
+            {% for o in orders %}
+            <h3 class="mt-3 pt-2 mb-4">Rendelésszám: {{ o.id }}</h3>
+
+            <table class="table mt-3 pt-2 mb-4">
+                <thead>
+                    <tr>
+                        <th scope="col">Termék</th>
+                        <th scope="col">Mennyiség</th>
+                        <th scope="col">Ár</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for oi in ordered_items %}
+                    {% if oi.order == o %}
+                    <tr>
+                        <td scope="row">{{ oi.product }}</td>
+                        <td>{{ oi.quantity }}</td>
+                        <td>{{ oi.price }} Ft.</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <hr class="mt-3 pt-2 mb-4">
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <hr class="mt-3 pt-2 mb-4">
+    <h2>Korábbi megrendelések:</h2>
+    <div class="row">
+        <p class="text-muted"> Eddig még nem rendelt tőlünk</p>
+    </div>
+    {% endif %}
 
 </div>
 {% endblock %}

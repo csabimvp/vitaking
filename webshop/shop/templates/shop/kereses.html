@@ -9,6 +9,13 @@ Keresés
 {% block content %}
 
 <div class="container-fluid mt-3 pt-2">
+    <div class="loader-wrapper">
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
             <div class="sidebar-sticky pt-3">
@@ -32,12 +39,15 @@ Keresés
             </div>
         </nav>
 
-        <main role="main" class="col-md-auto">
+        <main role="main" class="col-md-auto mt-3">
             {% if query %}
-            <div class="input-group mt-3">
+            <div class="col-md-6">
                 <form method="get">
-                    {{ form.query }}
-                    <input type="submit" class="btn btn-outline-dark mt-3" value="Keresés">
+                    <div class="input-group">
+                        {{ form.query }}
+                        <button type="submit" class="btn btn-outline-dark ml-2"><span><i class="fas fa-search"></i>
+                                Keresés</span></button>
+                    </div>
                 </form>
             </div>
 
@@ -67,17 +77,27 @@ Keresés
                                             href="{{ product.get_absolute_url }}">{{ product.name }}</a>
                                     </h5>
                                     {% if product.on_sale %}
-                                    <p class="card-text">{{ product.on_sale_price|intcomma }} Ft.</p>
+                                    <p class="card-text"><del>{{ product.price|intcomma }} Ft.</del><span>
+                                            {{ product.on_sale_price|intcomma }} Ft.</span></p>
                                     {% else %}
                                     <p class="card-text">{{ product.price|intcomma }} Ft.</p>
                                     {% endif %}
                                     <form action="{% url "cart:cart_add" product.id %}" method="post">
-                                        {{ cart_product_form }}
-                                        {% csrf_token %}
-                                        <input type="submit" class="btn btn-primary" value="Kosárba teszem">
+                                        <div class="row">
+                                            <div class="col-md-4 mt-2">
+                                                <label
+                                                    for="{{ cart_product_form.quantity.id_for_label }}">Mennyiség:</label>
+                                            </div>
+                                            <div class="form-group col-md-6 ml-3">
+                                                {% csrf_token %}
+                                                {{ cart_product_form.quantity.errors }}
+                                                {{ cart_product_form.quantity }}
+                                            </div>
+                                        </div>
+                                        <input type="submit" class="btn btn-primary btn-sm mt-3" value="Kosárba teszem">
+                                        <a href="{{ product.get_absolute_url }}"
+                                            class="btn btn-outline-info btn-sm mt-3 mr-2">Megtekint</a>
                                     </form>
-                                    <a href="{{ product.get_absolute_url }}"
-                                        class="btn btn-outline-secondary mr-2">Megtekint</a>
                                 </div>
                             </div>
                         </div>
@@ -87,13 +107,22 @@ Keresés
             </div>
             {% else %}
             <h1>Keressen termékeink között</h1>
-            <div class="input-group mt-3">
-                <form method="get">
+
+            <form method="get">
+                <div class="input-group">
                     {{ form.query }}
-                    <input type="submit" class="btn btn-outline-dark mt-3" value="Keresés">
-                </form>
-            </div>
+                    <button type="submit" class="btn btn-outline-dark ml-2"><span><i class="fas fa-search"></i>
+                            Keresés</span></button>
+                </div>
+            </form>
+
             {% endif %}
+
+            <script>
+                $(window).on("load", function () {
+                    $(".loader-wrapper").fadeOut("slow");
+                });
+            </script>
         </main>
     </div>
 </div>

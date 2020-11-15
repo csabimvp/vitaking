@@ -17,6 +17,30 @@ def product_list(request, category_slug=None):
 
     cart_product_form = CartAddProductForm()
 
+    form = SearchForm()
+    query = None
+    results = []
+
+    if "query" in request.GET:
+        form = SearchForm(request.GET)
+
+        if form.is_valid():
+            query = form.cleaned_data["query"]
+            results = Product.objects.annotate(
+                search=SearchVector("name", "description"),
+            ).filter(search=query)
+        return render(
+            request,
+            "shop/kereses.html",
+            {
+                "cart_product_form": cart_product_form,
+                "categories": categories,
+                "form": form,
+                "query": query,
+                "results": results,
+            },
+        )
+
     return render(
         request,
         "shop/product/list.html",
@@ -25,6 +49,8 @@ def product_list(request, category_slug=None):
             "categories": categories,
             "products": products,
             "cart_product_form": cart_product_form,
+            "form": form,
+            "query": query,
         },
     )
 
@@ -35,7 +61,7 @@ def product_detail(request, id, slug):
     descriptors = ProductDescription.objects.filter(
         product_id__in=Product.objects.filter(id=id)
     )
-    images = ProductImage.objects.filter(id=id)
+    images = ProductImage.objects.filter(product_id__in=Product.objects.filter(id=id))
 
     on_sale_products = Product.objects.filter(on_sale=True).exclude(id=id)
     on_sale_products = on_sale_products[:4]
@@ -120,6 +146,8 @@ def product_search(request):
 
     categories = Category.objects.all()
 
+    cart_product_form = CartAddProductForm()
+
     if "query" in request.GET:
         form = SearchForm(request.GET)
 
@@ -132,5 +160,11 @@ def product_search(request):
     return render(
         request,
         "shop/kereses.html",
-        {"categories": categories, "form": form, "query": query, "results": results},
+        {
+            "cart_product_form": cart_product_form,
+            "categories": categories,
+            "form": form,
+            "query": query,
+            "results": results,
+        },
     )
