@@ -104,7 +104,15 @@
         </div>
         <div class="col-6 col-md-4">
             <a href="{% url "shop:product_list" %}" class="btn btn-primary">Vásárlás folytatása</a>
+            {% with total_items=cart|length %}
+            {% if total_items > 0 %}
             <a href="{% url "orders:order_create" %}" class="btn btn-secondary ml-2">Rendelés</a>
+            {% else %}
+            <button type="button" class="btn btn-secondary ml-2" data-toggle="popover" data-placement="right"
+                title="Az Ön kosara üres!"
+                data-content="Kérjük, adjon termékeket a kosárhoz a megrendelés folytatásához.">Rendelés</button>
+            {% endif %}
+            {% endwith %}
         </div>
     </div>
     {% endif %}

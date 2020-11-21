@@ -1,0 +1,13 @@
+<div class="container-fluid" style="padding-top: 2rem;">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if page.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}">Előző</a></li>
+            {% endif %}
+            <li class="page-item"><a class="page-link">{{ page.number }} / {{ page.paginator.num_pages }}</a></li>
+            {% if page.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page.next_page_number }}">Következő</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>

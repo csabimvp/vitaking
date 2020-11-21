@@ -171,6 +171,10 @@
         $(window).on("load", function () {
             $(".loader-wrapper").fadeOut("slow");
         });
+
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
     </script>
 </body>
 
