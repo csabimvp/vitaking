@@ -145,9 +145,9 @@ def order_create(request):
         usr = request.user.id
         user = User.objects.get(id=usr)
         address = Address.objects.get(user_id=user)
-        form = BillingAddressCreateForm()
 
         if request.method == "POST":
+            form = BillingAddressCreateForm(request.POST)
 
             # Setting discount to zero if there is no Coupon
             if cart.coupon == None:
@@ -233,16 +233,20 @@ def order_create(request):
                     # redirect for credit / debit card payment
                     return redirect(reverse("payment:process"))
 
+        else:
+            form = BillingAddressCreateForm()
+
     # If user is NOT authenticated.
     else:
         user = None
         address = None
-        form = OrderCreateForm()
 
         # Using dummy user (VitaKing) for future analytics and idenctification
         dummy_user = User.objects.get(id=1)
 
         if request.method == "POST":
+
+            form = OrderCreateForm(request.POST)
 
             # Setting discount to zero if there is no Coupon
             if cart.coupon == None:
@@ -334,6 +338,9 @@ def order_create(request):
                 else:
                     # redirect for credit / debit card payment
                     return redirect(reverse("payment:process"))
+
+        else:
+            form = OrderCreateForm()
 
     return render(
         request,
