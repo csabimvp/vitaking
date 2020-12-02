@@ -59,4 +59,3 @@ def cart_detail(request):
             "recommended_products": recommended_products,
         },
     )
-

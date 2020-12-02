@@ -144,7 +144,10 @@ def order_create(request):
     if request.user.is_authenticated:
         usr = request.user.id
         user = User.objects.get(id=usr)
-        address = Address.objects.get(user_id=user)
+        try:
+            address = Address.objects.get(user_id=user)
+        except Address.DoesNotExist:
+            address = None
 
         if request.method == "POST":
             form = BillingAddressCreateForm(request.POST)
